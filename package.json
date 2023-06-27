@@ -1,0 +1,30 @@
+{
+  "name": "pebmed-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "start:watch": "tsx watch src/server.ts",
+    "build": "tsup src",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/hericke47/pebmed-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/hericke47/pebmed-api/issues"
+  },
+  "homepage": "https://gitlab.com/hericke47/pebmed-api#readme",
+  "devDependencies": {
+    "@types/node": "20.3.2",
+    "tsup": "7.1.0",
+    "tsx": "3.12.7",
+    "typescript": "5.1.3",
+    "vitest": "0.32.2"
+  }
+}
