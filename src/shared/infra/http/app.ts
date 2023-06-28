@@ -7,7 +7,7 @@ import { errors } from "celebrate";
 import "@shared/container";
 import getConnection from "@shared/infra/typeorm/";
 
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import AppError from "@shared/errors/AppError";
 import routes from "./routes";
 
@@ -20,18 +20,16 @@ app.use(routes);
 app.use(cors());
 app.use(errors());
 
-app.use(
-  (err: Error, _request: Request, response: Response, _next: NextFunction) => {
-    if (err instanceof AppError) {
-      return response.status(err.statusCode).json({
-        message: err.message,
-      });
-    }
-    return response.status(500).json({
-      status: "error",
-      message: `Internal server error - ${err.message}`,
+app.use((err: Error, _request: Request, response: Response) => {
+  if (err instanceof AppError) {
+    return response.status(err.statusCode).json({
+      message: err.message,
     });
   }
-);
+  return response.status(500).json({
+    status: "error",
+    message: `Internal server error - ${err.message}`,
+  });
+});
 
 export { app };

@@ -14,6 +14,6 @@ export class CreateDoctorController {
       password,
     });
 
-    return response.json(doctor);
+    return response.status(201).json(doctor);
   }
 }

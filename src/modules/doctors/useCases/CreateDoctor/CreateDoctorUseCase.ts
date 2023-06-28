@@ -21,21 +21,21 @@ class CreateDoctorUseCase {
   ) { }
 
   async execute({ name, email, password }: IRequest): Promise<Doctor> {
-    const checkUserExists = await this.doctorRepository.findByEmail(email);
+    const checkDoctorExists = await this.doctorRepository.findByEmail(email);
 
-    if (checkUserExists) {
+    if (checkDoctorExists) {
       throw new AppError("Email já está em uso!");
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const user = await this.doctorRepository.create({
+    const doctor = await this.doctorRepository.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    return user;
+    return doctor;
   }
 }
 
