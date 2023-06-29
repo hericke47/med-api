@@ -52,3 +52,56 @@ export const createDoctor = {
     },
   },
 };
+
+export const authenticateDoctor = {
+  post: {
+    description: "Authenticate.",
+    tags: ["Doctors"],
+    requestBody: {
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              email: {
+                type: "string",
+              },
+              password: {
+                type: "string",
+              },
+            },
+          },
+          example: {
+            email: "doctorjhondoe@example.com",
+            password: "123456",
+          },
+        },
+      },
+    },
+    responses: {
+      "200": {
+        content: {
+          "application/json": {
+            example: {
+              doctor: {
+                name: "Doctor John doe",
+                email: "doctorjhondoe@example.com",
+              },
+              token: "example-token",
+              refresh_token: "example-refresh-token",
+            },
+          },
+        },
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: {
+              message: "Email or password incorrect!",
+            },
+          },
+        },
+      },
+    },
+  },
+};
