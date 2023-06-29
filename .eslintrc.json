@@ -57,7 +57,13 @@
         ]
       }
     ],
-    "prettier/prettier": "error"
+    "indent": [
+      "error",
+      2
+    ],
+    "prettier/prettier": [
+      "error"
+    ]
   },
   "settings": {
     "import/resolver": {

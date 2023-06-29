@@ -18,7 +18,7 @@ class CreateDoctorUseCase {
 
     @inject("HashProvider")
     private hashProvider: IHashProvider
-  ) { }
+  ) {}
 
   async execute({ name, email, password }: IRequest): Promise<Doctor> {
     const checkDoctorExists = await this.doctorRepository.findByEmail(email);
