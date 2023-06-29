@@ -16,6 +16,21 @@ services:
     networks:
       - pebmed-network
 
+  pebmed-postgres-test:
+    image: postgres
+    container_name: pebmed-postgres-test
+    restart: unless-stopped
+    ports:
+      - ${POSTGRES_PORT_TEST}:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER_TEST}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS_TEST}
+      - POSTGRES_DB=${POSTGRES_DB_TEST}
+    volumes:
+      - pgdata:/data/postgres/test
+    networks:
+      - pebmed-network
+
   pebmed-api:
     build: .
     container_name: pebmed-api

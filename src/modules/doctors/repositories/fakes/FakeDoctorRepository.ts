@@ -31,16 +31,6 @@ class FakeDoctorRepository implements IDoctorRepository {
 
     return doctor;
   }
-
-  public async save(doctor: Doctor): Promise<Doctor> {
-    const findIndex = this.doctors.findIndex(
-      (findDoctor) => findDoctor.id === doctor.id
-    );
-
-    this.doctors[findIndex] = doctor;
-
-    return doctor;
-  }
 }
 
 export default FakeDoctorRepository;

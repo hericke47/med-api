@@ -3,21 +3,20 @@ import { container } from "tsyringe";
 
 import { RefreshDoctorTokenUseCase } from "./RefreshDoctorTokenUseCase";
 
-class RefreshTokenController {
+class RefreshDoctorTokenController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const token =
-      request.body.token ||
-      request.headers["x-access-token"] ||
-      request.query.token;
+    const { refreshToken } = request.body;
 
     const refreshDoctorTokenUseCase = container.resolve(
       RefreshDoctorTokenUseCase
     );
 
-    const refreshToken = await refreshDoctorTokenUseCase.execute(token);
+    const refreshTokenResponse = await refreshDoctorTokenUseCase.execute(
+      refreshToken
+    );
 
-    return response.json(refreshToken);
+    return response.json(refreshTokenResponse);
   }
 }
 
-export { RefreshTokenController };
+export { RefreshDoctorTokenController };
