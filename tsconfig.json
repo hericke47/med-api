@@ -14,8 +14,8 @@
       "@shared/*": [
         "shared/*"
       ],
-      "@utils/*": [
-        "utils/*"
+      "@doc/*": [
+        "doc/*"
       ]
     },
     "esModuleInterop": true,

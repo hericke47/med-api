@@ -20,7 +20,7 @@ describe("Create Doctor", () => {
     const response = await request(app).post("/doctors").send({
       name: "Doctor john Doe",
       email: "doctorjhondoe@example.com",
-      password: "123456",
+      password: "example-password",
     });
 
     expect(response.status).toBe(201);
@@ -30,7 +30,7 @@ describe("Create Doctor", () => {
     const response = await request(app).post("/doctors").send({
       name: "Doctor john Doe",
       email: "doctorjhondoe@example.com",
-      password: "123456",
+      password: "example-password",
     });
 
     expect(response.status).toBe(400);

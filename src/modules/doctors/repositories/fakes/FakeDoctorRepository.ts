@@ -1,4 +1,4 @@
-import { v4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 
 import { Doctor } from "@modules/doctors/infra/typeorm/entities/Doctor";
 import ICreateDoctorDTO from "@modules/doctors/dtos/ICreateDoctorDTO";
@@ -20,7 +20,7 @@ class FakeDoctorRepository implements IDoctorRepository {
 
     Object.assign(
       doctor,
-      { id: v4() },
+      { id: uuidV4() },
       {
         ...doctorData,
         active: true,
