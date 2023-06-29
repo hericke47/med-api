@@ -22,10 +22,6 @@ class DoctorRepository implements IDoctorRepository {
     return doctor;
   }
 
-  public async save(doctor: Doctor): Promise<Doctor> {
-    return this.ormRepository.save(doctor);
-  }
-
   public async findByEmail(email: string): Promise<Doctor | undefined> {
     const doctor = await this.ormRepository.findOne({
       where: { email, active: true },
