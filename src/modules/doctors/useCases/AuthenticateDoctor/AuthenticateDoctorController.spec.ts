@@ -35,7 +35,7 @@ describe("Authenticate Doctor Controller", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("doctor");
     expect(response.body).toHaveProperty("token");
-    expect(response.body).toHaveProperty("refresh_token");
+    expect(response.body).toHaveProperty("refreshToken");
     expect(response.body.doctor.email).toEqual("doctorjhondoe@example.com");
     expect(response.body.doctor.name).toEqual("Doctor john Doe");
   });

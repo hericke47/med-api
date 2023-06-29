@@ -12,19 +12,35 @@ class DoctorTokensRepository implements IDoctorTokensRepository {
   }
 
   async create({
-    expires_date,
-    refresh_token,
-    doctor_id,
+    expiresDate,
+    refreshToken,
+    doctorId,
   }: ICreateDoctorTokenDTO): Promise<DoctorTokens> {
     const doctorToken = this.ormRepository.create({
-      expires_date,
-      refresh_token,
-      doctor_id,
+      expires_date: expiresDate,
+      refresh_token: refreshToken,
+      doctor_id: doctorId,
     });
 
     await this.ormRepository.save(doctorToken);
 
     return doctorToken;
+  }
+
+  async findByDoctorIdAndRefreshToken(
+    doctorId: string,
+    refreshToken: string
+  ): Promise<DoctorTokens | undefined> {
+    const doctorTokens = await this.ormRepository.findOne({
+      doctor_id: doctorId,
+      refresh_token: refreshToken,
+    });
+
+    return doctorTokens;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
   }
 }
 

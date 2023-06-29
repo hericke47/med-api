@@ -1,7 +1,7 @@
 interface ICreateDoctorTokenDTO {
-  doctor_id: string;
-  expires_date: Date;
-  refresh_token: string;
+  doctorId: string;
+  expiresDate: Date;
+  refreshToken: string;
 }
 
 export { ICreateDoctorTokenDTO };

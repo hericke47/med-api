@@ -3,6 +3,7 @@ import { Connection } from "typeorm";
 
 import { app } from "@shared/infra/http/app";
 import createConnection from "@shared/infra/typeorm";
+import ICreateDoctorDTO from "@modules/doctors/dtos/ICreateDoctorDTO";
 
 let connection: Connection;
 describe("Create Doctor", () => {
@@ -17,12 +18,16 @@ describe("Create Doctor", () => {
   });
 
   it("should be able to create a new doctor ", async () => {
-    const response = await request(app).post("/doctors").send({
+    const doctor: ICreateDoctorDTO = {
       name: "Doctor john Doe",
       email: "doctorjhondoe@example.com",
       password: "example-password",
-    });
+    };
 
+    const response = await request(app).post("/doctors").send(doctor);
+
+    expect(response.body.name).toEqual(doctor.name);
+    expect(response.body.email).toEqual(doctor.email);
     expect(response.status).toBe(201);
   });
 

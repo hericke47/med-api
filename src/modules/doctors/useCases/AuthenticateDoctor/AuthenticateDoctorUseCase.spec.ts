@@ -50,7 +50,7 @@ describe("Authenticate Doctor", () => {
     });
 
     expect(auth).toHaveProperty("token");
-    expect(auth).toHaveProperty("refresh_token");
+    expect(auth).toHaveProperty("refreshToken");
     expect(auth.doctor.name).toEqual(doctor.name);
     expect(auth.doctor.email).toEqual(doctor.email);
   });

@@ -18,7 +18,7 @@ interface IResponse {
     email: string;
   };
   token: string;
-  refresh_token: string;
+  refreshToken: string;
 }
 
 @injectable()
@@ -41,11 +41,11 @@ class AuthenticateDoctorUseCase {
     const doctor = await this.doctorRepository.findByEmail(email);
 
     const {
-      expires_in_token,
-      secret_refresh_token,
-      secret_token,
-      expires_in_refresh_token,
-      expires_refresh_token_days,
+      expiresInToken,
+      secretRefreshToken,
+      secretToken,
+      expiresInRefreshToken,
+      expiresRefreshTokenDays,
     } = auth;
 
     if (!doctor) {
@@ -61,24 +61,24 @@ class AuthenticateDoctorUseCase {
       throw new AppError("Email or password incorrect!");
     }
 
-    const token = sign({}, secret_token, {
+    const token = sign({}, secretToken, {
       subject: doctor.id,
-      expiresIn: expires_in_token,
+      expiresIn: expiresInToken,
     });
 
-    const refresh_token = sign({ email }, secret_refresh_token, {
+    const refreshToken = sign({ email }, secretRefreshToken, {
       subject: doctor.id,
-      expiresIn: expires_in_refresh_token,
+      expiresIn: expiresInRefreshToken,
     });
 
-    const refresh_token_expires_date = this.dateProvider.addDays(
-      expires_refresh_token_days
+    const refreshTokenExpiresDate = this.dateProvider.addDays(
+      expiresRefreshTokenDays
     );
 
     await this.doctorTokensRepository.create({
-      doctor_id: doctor.id,
-      refresh_token,
-      expires_date: refresh_token_expires_date,
+      doctorId: doctor.id,
+      refreshToken,
+      expiresDate: refreshTokenExpiresDate,
     });
 
     const tokenReturn: IResponse = {
@@ -87,7 +87,7 @@ class AuthenticateDoctorUseCase {
         email: doctor.email,
       },
       token,
-      refresh_token,
+      refreshToken,
     };
 
     return tokenReturn;

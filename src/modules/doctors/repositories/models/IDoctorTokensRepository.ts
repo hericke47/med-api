@@ -3,10 +3,17 @@ import { DoctorTokens } from "@modules/doctors/infra/typeorm/entities/DoctorToke
 
 interface IDoctorTokensRepository {
   create({
-    expires_date,
-    refresh_token,
-    doctor_id,
+    expiresDate,
+    refreshToken,
+    doctorId,
   }: ICreateDoctorTokenDTO): Promise<DoctorTokens>;
+
+  findByDoctorIdAndRefreshToken(
+    doctorId: string,
+    refreshToken: string
+  ): Promise<DoctorTokens | undefined>;
+
+  deleteById(id: string): Promise<void>;
 }
 
 export default IDoctorTokensRepository;

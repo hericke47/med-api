@@ -88,7 +88,7 @@ export const authenticateDoctor = {
                 email: "doctorjhondoe@example.com",
               },
               token: "example-token",
-              refresh_token: "example-refresh-token",
+              refreshToken: "example-refresh-token",
             },
           },
         },
