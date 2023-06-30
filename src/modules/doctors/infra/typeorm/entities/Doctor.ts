@@ -18,7 +18,7 @@ class Doctor {
   @Column({ length: 200, type: "varchar" })
   email: string;
 
-  @Column({ length: 150, type: "varchar" })
+  @Column({ length: 200, type: "varchar" })
   password: string;
 
   @CreateDateColumn()

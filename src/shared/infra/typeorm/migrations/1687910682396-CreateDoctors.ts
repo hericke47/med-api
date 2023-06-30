@@ -24,7 +24,7 @@ export class CreateDoctors1687910682396 implements MigrationInterface {
           {
             name: "password",
             type: "varchar",
-            length: "150",
+            length: "200",
           },
           {
             name: "created_at",
