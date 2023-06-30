@@ -1,4 +1,4 @@
-import { v4 } from "uuid";
+import { v4 as uuidV4 } from "uuid";
 
 import { Doctor } from "@modules/doctors/infra/typeorm/entities/Doctor";
 import ICreateDoctorDTO from "@modules/doctors/dtos/ICreateDoctorDTO";
@@ -20,7 +20,7 @@ class FakeDoctorRepository implements IDoctorRepository {
 
     Object.assign(
       doctor,
-      { id: v4() },
+      { id: uuidV4() },
       {
         ...doctorData,
         active: true,
@@ -28,16 +28,6 @@ class FakeDoctorRepository implements IDoctorRepository {
     );
 
     this.doctors.push(doctor);
-
-    return doctor;
-  }
-
-  public async save(doctor: Doctor): Promise<Doctor> {
-    const findIndex = this.doctors.findIndex(
-      (findDoctor) => findDoctor.id === doctor.id
-    );
-
-    this.doctors[findIndex] = doctor;
 
     return doctor;
   }

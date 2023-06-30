@@ -20,7 +20,6 @@ module.exports = {
     process.env.NODE_ENV === "test"
       ? process.env.POSTGRES_DB_TEST
       : process.env.POSTGRES_DB,
-  logging: false,
   entities: ["./src/modules/**/infra/typeorm/entities/*.ts"],
   migrations: ["./src/shared/infra/typeorm/migrations/*.ts"],
   cli: {

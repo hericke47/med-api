@@ -2,6 +2,7 @@ import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/Fak
 import AppError from "@shared/errors/AppError";
 
 import FakeDoctorRepository from "@modules/doctors/repositories/fakes/FakeDoctorRepository";
+import ICreateDoctorDTO from "@modules/doctors/dtos/ICreateDoctorDTO";
 import { CreateDoctorUseCase } from "./CreateDoctorUseCase";
 
 let fakeDoctorRepository: FakeDoctorRepository;
@@ -19,28 +20,36 @@ describe("CreateDoctor", () => {
     );
   });
   it("should be able to create a new doctor", async () => {
-    const doctor = await createDoctor.execute({
+    const doctor: ICreateDoctorDTO = {
       name: "Doctor john Doe",
       email: "doctorjhondoe@example.com",
-      password: "123456",
-    });
+      password: "example-password",
+    };
 
-    expect(doctor).toHaveProperty("id");
+    const createdDoctor = await createDoctor.execute(doctor);
+
+    expect(createdDoctor.name).toEqual(doctor.name);
+    expect(createdDoctor.email).toEqual(doctor.email);
+    expect(createdDoctor).toHaveProperty("id");
   });
 
   it("should not be able to create a new doctor whith email from another", async () => {
-    await createDoctor.execute({
+    const doctor: ICreateDoctorDTO = {
       name: "Doctor john Doe",
       email: "doctorjhondoe@example.com",
-      password: "123456",
-    });
+      password: "example-password",
+    };
+
+    const anotherDoctorWithSameEmail = {
+      name: "Another Doctor",
+      email: "doctorjhondoe@example.com",
+      password: "another-example-password",
+    };
+
+    await createDoctor.execute(doctor);
 
     await expect(
-      createDoctor.execute({
-        name: "Doctor john Doe",
-        email: "doctorjhondoe@example.com",
-        password: "123456",
-      })
-    ).rejects.toBeInstanceOf(AppError);
+      createDoctor.execute(anotherDoctorWithSameEmail)
+    ).rejects.toEqual(new AppError("Email address already used."));
   });
 });

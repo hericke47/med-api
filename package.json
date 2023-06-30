@@ -11,7 +11,7 @@
     "typeorm:migration:create": "tsx ./node_modules/typeorm/cli migration:create -n",
     "typeorm:migration:run": "tsx ./node_modules/typeorm/cli migration:run",
     "typeorm:migration:revert": "tsx ./node_modules/typeorm/cli migration:revert",
-    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles"
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --collect-coverage"
   },
   "repository": {
     "type": "git",

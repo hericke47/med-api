@@ -1,6 +1,6 @@
 export const createDoctor = {
   post: {
-    description: "Cria um doutor.",
+    description: "Create a doctor.",
     tags: ["Doctors"],
     requestBody: {
       content: {
@@ -44,7 +44,7 @@ export const createDoctor = {
         content: {
           "application/json": {
             example: {
-              message: "Email já está em uso!",
+              message: "Email address already used.",
             },
           },
         },

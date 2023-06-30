@@ -7,7 +7,7 @@ import { serve, setup } from "swagger-ui-express";
 
 import express, { NextFunction, Request, Response } from "express";
 import AppError from "@shared/errors/AppError";
-import { swaggerConfig } from "doc";
+import { swaggerConfig } from "@doc/index";
 import getConnection from "@shared/infra/typeorm/";
 import routes from "./routes";
 

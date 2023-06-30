@@ -24,7 +24,7 @@ class CreateDoctorUseCase {
     const checkDoctorExists = await this.doctorRepository.findByEmail(email);
 
     if (checkDoctorExists) {
-      throw new AppError("Email já está em uso!");
+      throw new AppError("Email address already used.");
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
