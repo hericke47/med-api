@@ -8,12 +8,6 @@ export const swaggerConfig: SwaggerOptions = {
     title: "PEBMED",
     description: "Documentação Api PEBMED",
   },
-  servers: [
-    {
-      url: "http://localhost:3003",
-      description: "Servidor local",
-    },
-  ],
   components: {
     securitySchemes: {
       bearerAuth: {
