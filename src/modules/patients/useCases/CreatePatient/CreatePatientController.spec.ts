@@ -50,6 +50,8 @@ describe("Create Patient", () => {
       .send(patient)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("id");
     expect(response.body.name).toEqual(patient.name);
     expect(response.body.email).toEqual(patient.email);
     expect(response.body.gender_id).toEqual(patient.genderId);
@@ -57,7 +59,6 @@ describe("Create Patient", () => {
     expect(response.body.weight).toEqual(patient.weight);
     expect(response.body.phone).toEqual(patient.phone);
     expect(response.body.doctor_id).toEqual(doctorUUID);
-    expect(response.body).toHaveProperty("id");
   });
 
   it("should not be able to create a new patient if doctor does not exists", async () => {
