@@ -11,3 +11,5 @@ dist/
 coverage
 tmp/*
 !tmp/.gitkeep
+
+ormconfig.js
