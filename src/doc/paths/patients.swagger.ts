@@ -2,7 +2,7 @@ export const createPatient = {
   post: {
     description:
       "Create a patient. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
-    tags: ["Doctors"],
+    tags: ["Patients"],
     security: [
       {
         bearerAuth: [],
