@@ -20,8 +20,8 @@
     "prettier"
   ],
   "rules": {
-    "camelcase": "off",
-    "import/no-unresolved": "error",
+    "camelcase": "error",
+    "import/no-unresolved": "off",
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -57,7 +57,9 @@
         ]
       }
     ],
-    "prettier/prettier": "error"
+    "prettier/prettier": [
+      "error"
+    ]
   },
   "settings": {
     "import/resolver": {
