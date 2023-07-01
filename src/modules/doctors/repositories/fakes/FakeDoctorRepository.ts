@@ -31,6 +31,14 @@ class FakeDoctorRepository implements IDoctorRepository {
 
     return doctor;
   }
+
+  async findById(doctorId: string): Promise<Doctor | undefined> {
+    const findDoctor = this.doctors.find(
+      (doctor) => doctor.id === doctorId && doctor.active === true
+    );
+
+    return findDoctor;
+  }
 }
 
 export default FakeDoctorRepository;
