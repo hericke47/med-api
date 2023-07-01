@@ -77,6 +77,12 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 cp .env.example .env
 ```
 
+**Copiar arquivo com as configurações do banco de dados**
+
+```bash
+cp ormconfig.example.js ormconfig.js
+```
+
 **Executar Docker-compose para subir o container com a api e o container com o banco de dados postgres**
 
 ```bash

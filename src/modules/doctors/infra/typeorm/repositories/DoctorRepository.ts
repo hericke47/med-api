@@ -29,6 +29,14 @@ class DoctorRepository implements IDoctorRepository {
 
     return doctor;
   }
+
+  async findById(doctorId: string): Promise<Doctor | undefined> {
+    const doctor = await this.ormRepository.findOne({
+      where: { id: doctorId, active: true },
+    });
+
+    return doctor;
+  }
 }
 
 export default DoctorRepository;
