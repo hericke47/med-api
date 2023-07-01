@@ -22,9 +22,9 @@ app.use(express.json());
 app.use(routes);
 app.use(errors());
 
-if (process.env.NODE_ENV !== "production") {
-  app.use("/api-docs", serve, setup(swaggerConfig));
-}
+// if (process.env.NODE_ENV !== "production") {
+app.use("/api-docs", serve, setup(swaggerConfig));
+// }
 
 app.use(
   (err: Error, _request: Request, response: Response, _next: NextFunction) => {
