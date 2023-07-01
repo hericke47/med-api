@@ -12,7 +12,7 @@ let fakeDoctorRepository: FakeDoctorRepository;
 let fakeHashProvider: FakeHashProvider;
 let fakeDoctorTokenRepository: FakeDoctorTokensRepository;
 let dateProvider: DayjsDateProvider;
-let authenticateDoctorUseCase: AuthenticateDoctorUseCase;
+let authenticateDoctor: AuthenticateDoctorUseCase;
 let createDoctor: CreateDoctorUseCase;
 
 describe("Authenticate Doctor", () => {
@@ -22,7 +22,7 @@ describe("Authenticate Doctor", () => {
     fakeDoctorTokenRepository = new FakeDoctorTokensRepository();
     dateProvider = new DayjsDateProvider();
 
-    authenticateDoctorUseCase = new AuthenticateDoctorUseCase(
+    authenticateDoctor = new AuthenticateDoctorUseCase(
       fakeDoctorRepository,
       fakeDoctorTokenRepository,
       fakeHashProvider,
@@ -44,7 +44,7 @@ describe("Authenticate Doctor", () => {
 
     const createdDoctor = await createDoctor.execute(doctor);
 
-    const auth = await authenticateDoctorUseCase.execute({
+    const auth = await authenticateDoctor.execute({
       email: createdDoctor.email,
       password: createdDoctor.password,
     });
@@ -57,7 +57,7 @@ describe("Authenticate Doctor", () => {
 
   it("should not be able to authenticate if doctor does not exists", async () => {
     await expect(
-      authenticateDoctorUseCase.execute({
+      authenticateDoctor.execute({
         email: "non-existent-doctor-email@example.com",
         password: "example-password",
       })
@@ -74,7 +74,7 @@ describe("Authenticate Doctor", () => {
     const createdDoctor = await createDoctor.execute(doctor);
 
     await expect(
-      authenticateDoctorUseCase.execute({
+      authenticateDoctor.execute({
         email: createdDoctor.email,
         password: "incorrect-password",
       })

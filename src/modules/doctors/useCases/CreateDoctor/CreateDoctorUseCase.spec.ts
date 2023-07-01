@@ -9,7 +9,7 @@ let fakeDoctorRepository: FakeDoctorRepository;
 let fakeHashProvider: FakeHashProvider;
 let createDoctor: CreateDoctorUseCase;
 
-describe("CreateDoctor", () => {
+describe("Create Doctor", () => {
   beforeEach(() => {
     fakeDoctorRepository = new FakeDoctorRepository();
     fakeHashProvider = new FakeHashProvider();
