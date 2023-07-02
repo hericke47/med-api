@@ -7,7 +7,6 @@ import { inject, injectable } from "tsyringe";
 
 interface IPayload {
   sub: string;
-  email: string;
 }
 
 interface ITokenResponse {
@@ -34,10 +33,7 @@ class RefreshDoctorTokenUseCase {
       secretToken,
     } = auth;
 
-    const { email, sub } = verify(
-      refreshTokenRequest,
-      secretRefreshToken
-    ) as IPayload;
+    const { sub } = verify(refreshTokenRequest, secretRefreshToken) as IPayload;
 
     const doctorId = sub;
 
@@ -53,7 +49,7 @@ class RefreshDoctorTokenUseCase {
 
     await this.doctorTokensRepository.deleteById(doctorToken.id);
 
-    const refreshToken = sign({ email }, secretRefreshToken, {
+    const refreshToken = sign({}, secretRefreshToken, {
       subject: sub,
       expiresIn: expiresInRefreshToken,
     });

@@ -4,6 +4,7 @@ import { Joi, Segments, celebrate } from "celebrate";
 import { GetPatientController } from "@modules/patients/useCases/GetPatient/GetPatientController";
 import { ListPatientsController } from "@modules/patients/useCases/ListPatients/ListPatientsController";
 import { UpdatePatientController } from "@modules/patients/useCases/UpdatePatient/UpdatePatientController";
+import { DeletePatientController } from "@modules/patients/useCases/DeletePatient/DeletePatientController";
 import { ensureDoctorAuthenticated } from "../middlewares/ensureDoctorAuthenticated";
 
 const patientsRouter = Router();
@@ -12,6 +13,7 @@ const createPatientController = new CreatePatientController();
 const getPatientController = new GetPatientController();
 const listPatientsController = new ListPatientsController();
 const updatePatientController = new UpdatePatientController();
+const deletePatientController = new DeletePatientController();
 
 patientsRouter.post(
   "/",
@@ -57,6 +59,12 @@ patientsRouter.put(
   }),
   ensureDoctorAuthenticated,
   updatePatientController.handle
+);
+
+patientsRouter.delete(
+  "/:patientId",
+  ensureDoctorAuthenticated,
+  deletePatientController.handle
 );
 
 export default patientsRouter;
