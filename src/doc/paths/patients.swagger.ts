@@ -109,7 +109,7 @@ export const createPatient = {
   },
 };
 
-export const getAndUpdatePatient = {
+export const getAndUpdateAndDeletePatient = {
   get: {
     description: "Get patient by doctor.",
     tags: ["Patients"],
@@ -279,6 +279,63 @@ export const getAndUpdatePatient = {
               },
               {
                 message: "Phone number already used.",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+  delete: {
+    description:
+      "Delete a patient. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
+    tags: ["Patients"],
+    parameters: [
+      {
+        schema: {
+          type: "string",
+        },
+        in: "path",
+        name: "patientId",
+        required: true,
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    responses: {
+      "200": {
+        content: {},
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                message: "Doctor not found!",
+              },
+              {
+                message: "Patient not found!",
               },
             ],
           },
