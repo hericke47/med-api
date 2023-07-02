@@ -14,12 +14,10 @@ class DoctorRepository implements IDoctorRepository {
   public async create(doctorData: ICreateDoctorDTO): Promise<Doctor> {
     const doctor = this.ormRepository.create(doctorData);
 
-    await this.ormRepository.save({
+    return this.ormRepository.save({
       ...doctor,
       active: true,
     });
-
-    return doctor;
   }
 
   public async findByEmail(email: string): Promise<Doctor | undefined> {

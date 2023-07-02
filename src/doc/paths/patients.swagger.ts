@@ -14,14 +14,26 @@ export const createPatient = {
           schema: {
             type: "object",
             properties: {
-              name: {
+              birthDate: {
                 type: "string",
               },
               email: {
                 type: "string",
               },
-              password: {
+              name: {
                 type: "string",
+              },
+              phone: {
+                type: "string",
+              },
+              genderId: {
+                type: "number",
+              },
+              height: {
+                type: "number",
+              },
+              weight: {
+                type: "number",
               },
             },
           },
@@ -51,6 +63,9 @@ export const createPatient = {
               birth_date: "2003-09-01T00:00:00.000Z",
               gender_id: 1,
               doctor_id: "uuid",
+              active: true,
+              created_at: "2023-07-02T02:07:00.373Z",
+              updated_at: "2023-07-02T02:07:00.373Z",
             },
           },
         },

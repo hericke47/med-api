@@ -32,12 +32,10 @@ class PatientRepository implements IPatientRepository {
       weight,
     });
 
-    await this.ormRepository.save({
+    return this.ormRepository.save({
       ...patient,
       active: true,
     });
-
-    return patient;
   }
 
   async getByDoctorIdAndPatientId(
