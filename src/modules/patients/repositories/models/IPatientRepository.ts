@@ -16,4 +16,5 @@ export default interface IPatientRepository {
     phone: string,
     doctorId: string
   ): Promise<Patient | undefined>;
+  save(patient: Patient): Promise<Patient>;
 }

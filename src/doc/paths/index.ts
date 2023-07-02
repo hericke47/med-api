@@ -1,5 +1,9 @@
 import { createDoctor } from "./doctors.swagger";
-import { createPatient, getPatient, listPatients } from "./patients.swagger";
+import {
+  createPatient,
+  getAndUpdatePatient,
+  listPatients,
+} from "./patients.swagger";
 import { authenticateDoctor, refreshDoctorToken } from "./sessions.swagger";
 
 export default {
@@ -7,6 +11,6 @@ export default {
   "/sessions/refreshToken": refreshDoctorToken,
   "/doctors": createDoctor,
   "/patients": createPatient,
-  "/patients/{patientId}": getPatient,
+  "/patients/{patientId}": getAndUpdatePatient,
   "/patients/": listPatients,
 };
