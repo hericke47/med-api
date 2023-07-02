@@ -67,6 +67,7 @@ class PatientRepository implements IPatientRepository {
 
     return patient;
   }
+
   async getByPhoneAndDoctorId(
     phone: string,
     doctorId: string
@@ -76,6 +77,10 @@ class PatientRepository implements IPatientRepository {
     });
 
     return patient;
+  }
+
+  public async save(patient: Patient): Promise<Patient> {
+    return this.ormRepository.save(patient);
   }
 }
 

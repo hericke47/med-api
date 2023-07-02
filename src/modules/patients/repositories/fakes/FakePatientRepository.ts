@@ -85,6 +85,16 @@ class FakePatientRepository implements IPatientRepository {
 
     return findPatient;
   }
+
+  async save(patient: Patient): Promise<Patient> {
+    const findIndex = this.patients.findIndex(
+      (findPatient) => findPatient.id === patient.id
+    );
+
+    this.patients[findIndex] = patient;
+
+    return patient;
+  }
 }
 
 export default FakePatientRepository;
