@@ -39,5 +39,7 @@ describe("Create Doctor", () => {
     });
 
     expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Email address already used.");
   });
 });

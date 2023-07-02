@@ -8,7 +8,7 @@ interface IPayload {
   sub: string;
 }
 
-export default async function ensureAuthenticated(
+async function ensureDoctorAuthenticated(
   request: Request,
   response: Response,
   next: NextFunction
@@ -49,3 +49,5 @@ export default async function ensureAuthenticated(
     });
   }
 }
+
+export { ensureDoctorAuthenticated };

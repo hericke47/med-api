@@ -22,9 +22,7 @@ class DoctorTokensRepository implements IDoctorTokensRepository {
       doctor_id: doctorId,
     });
 
-    await this.ormRepository.save(doctorToken);
-
-    return doctorToken;
+    return this.ormRepository.save(doctorToken);
   }
 
   async findByDoctorIdAndRefreshToken(
