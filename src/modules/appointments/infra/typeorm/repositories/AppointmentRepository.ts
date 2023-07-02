@@ -36,7 +36,12 @@ class AppointmentRepository implements IAppointmentRepository {
     date: Date
   ): Promise<Appointment | undefined> {
     const appointment = await this.ormRepository.findOne({
-      where: { doctor_id: doctorId, active: true, date },
+      where: {
+        doctor_id: doctorId,
+        active: true,
+        date,
+        appointment_status_id: AppointmentStatusEnum.PENDING,
+      },
     });
 
     return appointment;

@@ -46,7 +46,7 @@ class CreateAppointmentUseCase {
     }
 
     if (this.dateProvider.compareIfBefore(new Date(date), new Date())) {
-      throw new AppError("You can't create an appointemnt on a past date.");
+      throw new AppError("You can't create an appointment on a past date.");
     }
 
     const alreadyExistentAppointmentOnThisDate =
