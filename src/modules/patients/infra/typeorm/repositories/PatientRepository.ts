@@ -56,6 +56,27 @@ class PatientRepository implements IPatientRepository {
 
     return patients;
   }
+
+  async getByEmailAndDoctorId(
+    email: string,
+    doctorId: string
+  ): Promise<Patient | undefined> {
+    const patient = await this.ormRepository.findOne({
+      where: { email, doctor_id: doctorId, active: true },
+    });
+
+    return patient;
+  }
+  async getByPhoneAndDoctorId(
+    phone: string,
+    doctorId: string
+  ): Promise<Patient | undefined> {
+    const patient = await this.ormRepository.findOne({
+      where: { phone, doctor_id: doctorId, active: true },
+    });
+
+    return patient;
+  }
 }
 
 export default PatientRepository;

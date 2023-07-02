@@ -8,4 +8,12 @@ export default interface IPatientRepository {
     patientId: string
   ): Promise<Patient | undefined>;
   listPatientsByDoctorId(doctorId: string): Promise<Patient[]>;
+  getByEmailAndDoctorId(
+    email: string,
+    doctorId: string
+  ): Promise<Patient | undefined>;
+  getByPhoneAndDoctorId(
+    phone: string,
+    doctorId: string
+  ): Promise<Patient | undefined>;
 }

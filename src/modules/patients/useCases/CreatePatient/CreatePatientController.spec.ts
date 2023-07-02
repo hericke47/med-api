@@ -62,12 +62,20 @@ describe("Create Patient", () => {
   });
 
   it("should not be able to create a new patient if doctor does not exists", async () => {
-    const authentication = await request(app).post("/sessions").send({
-      email: "doctorjhondoe@example.com",
-      password: "example-password",
+    const createdDoctor = await request(app).post("/doctors").send({
+      name: "Another Doctor john Doe",
+      email: "anotherdoctorjhondoe@example.com",
+      password: "another-example-password",
     });
 
-    await connection.query(`delete from doctors where id = '${doctorUUID}'`);
+    const authentication = await request(app).post("/sessions").send({
+      email: createdDoctor.body.email,
+      password: "another-example-password",
+    });
+
+    await connection.query(
+      `delete from doctors where id = '${createdDoctor.body.id}'`
+    );
 
     const patient = {
       birthDate: "09/01/2003",
@@ -87,5 +95,87 @@ describe("Create Patient", () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message");
     expect(response.body.message).toEqual("Doctor not found!");
+  });
+
+  it("should be able to create a new patient if email already in use", async () => {
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "09/01/2003",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    const patientWithSameEmail = {
+      birthDate: "09/01/2003",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 171,
+      name: "Patient Example",
+      phone: "48777777777",
+      weight: 80,
+    };
+
+    await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    const response = await request(app)
+      .post("/patients")
+      .send(patientWithSameEmail)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Email address already used.");
+  });
+
+  it("should be able to create a new patient if phone number already in use", async () => {
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "09/01/2003",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    const patientWithSamePhone = {
+      birthDate: "09/01/2003",
+      email: "another-patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 171,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 80,
+    };
+
+    await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    const response = await request(app)
+      .post("/patients")
+      .send(patientWithSamePhone)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Phone number already used.");
   });
 });

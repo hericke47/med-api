@@ -106,9 +106,15 @@ describe("Get Patient", () => {
   });
 
   it("should not be able to get patient if patient does not exists", async () => {
+    const createdDoctor = await request(app).post("/doctors").send({
+      name: "Another Doctor john Doe",
+      email: "another-doctorjhondoe@example.com",
+      password: "another-example-password",
+    });
+
     const authentication = await request(app).post("/sessions").send({
-      email: "doctorjhondoe@example.com",
-      password: "example-password",
+      email: createdDoctor.body.email,
+      password: "another-example-password",
     });
 
     const patient = {

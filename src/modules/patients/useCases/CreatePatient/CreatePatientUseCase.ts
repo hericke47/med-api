@@ -41,6 +41,20 @@ class CreatePatientUseCase {
       throw new AppError("Doctor not found!");
     }
 
+    const alreadyExistentPatientEmailByDoctor =
+      await this.patientRepository.getByEmailAndDoctorId(email, doctorId);
+
+    if (alreadyExistentPatientEmailByDoctor) {
+      throw new AppError("Email address already used.");
+    }
+
+    const alreadyExistentPatientPhoneByDoctor =
+      await this.patientRepository.getByPhoneAndDoctorId(phone, doctorId);
+
+    if (alreadyExistentPatientPhoneByDoctor) {
+      throw new AppError("Phone number already used.");
+    }
+
     const createdPatient = await this.patientRepository.create({
       birthDate,
       doctorId,

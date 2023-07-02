@@ -73,9 +73,17 @@ export const createPatient = {
       "400": {
         content: {
           "application/json": {
-            example: {
-              message: "Doctor not found!",
-            },
+            example: [
+              {
+                message: "Doctor not found!",
+              },
+              {
+                message: "Email address already used.",
+              },
+              {
+                message: "Phone number already used.",
+              },
+            ],
           },
         },
       },
