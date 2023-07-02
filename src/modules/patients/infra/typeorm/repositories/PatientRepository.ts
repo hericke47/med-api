@@ -32,12 +32,10 @@ class PatientRepository implements IPatientRepository {
       weight,
     });
 
-    await this.ormRepository.save({
+    return this.ormRepository.save({
       ...patient,
       active: true,
     });
-
-    return patient;
   }
 
   async getByDoctorIdAndPatientId(
@@ -49,6 +47,14 @@ class PatientRepository implements IPatientRepository {
     });
 
     return patient;
+  }
+
+  async listPatientsByDoctorId(doctorId: string): Promise<Patient[]> {
+    const patients = await this.ormRepository.find({
+      where: { doctor_id: doctorId, active: true },
+    });
+
+    return patients;
   }
 }
 

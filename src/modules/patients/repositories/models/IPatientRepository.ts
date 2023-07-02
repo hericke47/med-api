@@ -7,4 +7,5 @@ export default interface IPatientRepository {
     doctorId: string,
     patientId: string
   ): Promise<Patient | undefined>;
+  listPatientsByDoctorId(doctorId: string): Promise<Patient[]>;
 }

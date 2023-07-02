@@ -52,6 +52,12 @@ class FakePatientRepository implements IPatientRepository {
 
     return findPatient;
   }
+
+  async listPatientsByDoctorId(doctorId: string): Promise<Patient[]> {
+    return this.patients.filter(
+      (patient) => patient.doctor_id === doctorId && patient.active === true
+    );
+  }
 }
 
 export default FakePatientRepository;
