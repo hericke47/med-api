@@ -176,3 +176,82 @@ export const getPatient = {
     },
   },
 };
+
+export const listPatients = {
+  get: {
+    description: "List patients by doctor.",
+    tags: ["Patients"],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    responses: {
+      "200": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                id: "uuid",
+                name: "jhon doe",
+                phone: "4899999999",
+                email: "jhondoe@gmail.com",
+                height: 170,
+                weight: "68.8",
+                birth_date: "2003-09-01",
+                gender_id: 1,
+                doctor_id: "uuid",
+                created_at: "2023-07-02T01:32:47.298Z",
+                updated_at: "2023-07-02T01:32:47.298Z",
+                active: true,
+              },
+              {
+                id: "uuid",
+                name: "jhon doe",
+                phone: "4899999999",
+                email: "jhondoe2@gmail.com",
+                height: 170,
+                weight: "68.8",
+                birth_date: "2003-09-01",
+                gender_id: 1,
+                doctor_id: "uuid",
+                created_at: "2023-07-02T01:32:49.920Z",
+                updated_at: "2023-07-02T01:32:49.920Z",
+                active: true,
+              },
+            ],
+          },
+        },
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                message: "Doctor not found!",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+};
