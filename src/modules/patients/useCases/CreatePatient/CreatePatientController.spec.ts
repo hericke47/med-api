@@ -103,9 +103,11 @@ describe("Create Patient", () => {
       password: "example-password",
     });
 
+    const sameEmail = "patient-example@gmail.com";
+
     const patient = {
       birthDate: "09/01/2003",
-      email: "patient-example@gmail.com",
+      email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
@@ -115,7 +117,7 @@ describe("Create Patient", () => {
 
     const patientWithSameEmail = {
       birthDate: "09/01/2003",
-      email: "patient-example@gmail.com",
+      email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 171,
       name: "Patient Example",
@@ -144,13 +146,15 @@ describe("Create Patient", () => {
       password: "example-password",
     });
 
+    const samePhoneNumber = "48999999999";
+
     const patient = {
       birthDate: "09/01/2003",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
+      phone: samePhoneNumber,
       weight: 68.8,
     };
 
@@ -160,7 +164,7 @@ describe("Create Patient", () => {
       genderId: GendersEnum.FEMININE,
       height: 171,
       name: "Patient Example",
-      phone: "48999999999",
+      phone: samePhoneNumber,
       weight: 80,
     };
 
