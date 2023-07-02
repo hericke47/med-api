@@ -85,3 +85,79 @@ export const createPatient = {
     },
   },
 };
+
+export const getPatient = {
+  get: {
+    description: "Get patient by doctor.",
+    tags: ["Patients"],
+    parameters: [
+      {
+        schema: {
+          type: "string",
+        },
+        in: "path",
+        name: "patientId",
+        required: true,
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    responses: {
+      "200": {
+        content: {
+          "application/json": {
+            example: {
+              id: "uuid",
+              name: "jhon doe",
+              phone: "4899999999",
+              email: "jhondoe@gmail.com",
+              height: 170,
+              weight: "68.8",
+              birth_date: "2003-09-01",
+              gender_id: 1,
+              doctor_id: "doctoruuid",
+              created_at: "2023-07-02T00:21:07.266Z",
+              updated_at: "2023-07-02T00:21:07.266Z",
+              active: true,
+            },
+          },
+        },
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                message: "Doctor not found!",
+              },
+              {
+                message: "Patient not found!",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+};

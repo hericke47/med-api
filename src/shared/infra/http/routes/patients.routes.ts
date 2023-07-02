@@ -1,11 +1,13 @@
 import { CreatePatientController } from "@modules/patients/useCases/CreatePatient/CreatePatientController";
 import { Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
+import { GetPatientController } from "@modules/patients/useCases/GetPatient/GetPatientController";
 import { ensureDoctorAuthenticated } from "../middlewares/ensureDoctorAuthenticated";
 
 const patientsRouter = Router();
 
 const createPatientController = new CreatePatientController();
+const getPatientController = new GetPatientController();
 
 patientsRouter.post(
   "/",
@@ -22,6 +24,12 @@ patientsRouter.post(
   }),
   ensureDoctorAuthenticated,
   createPatientController.handle
+);
+
+patientsRouter.get(
+  "/:patientId",
+  ensureDoctorAuthenticated,
+  getPatientController.handle
 );
 
 export default patientsRouter;
