@@ -6,7 +6,7 @@ import createConnection from "@shared/infra/typeorm";
 
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
@@ -36,7 +36,7 @@ describe("Update Patient", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -46,7 +46,7 @@ describe("Update Patient", () => {
     };
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-patient-example@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -90,7 +90,7 @@ describe("Update Patient", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "jhon-doe@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -100,7 +100,7 @@ describe("Update Patient", () => {
     };
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-john-doe@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -141,7 +141,7 @@ describe("Update Patient", () => {
     });
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-john-doe@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -171,7 +171,7 @@ describe("Update Patient", () => {
     const sameEmail = "patient-example-email@gmail.com";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -181,7 +181,7 @@ describe("Update Patient", () => {
     };
 
     const updatePatientWithSameEmail = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -214,7 +214,7 @@ describe("Update Patient", () => {
     const samePhoneNumber = "480099923912";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "new-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -224,7 +224,7 @@ describe("Update Patient", () => {
     };
 
     const updatePatientWithSamePhone = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example-another-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,

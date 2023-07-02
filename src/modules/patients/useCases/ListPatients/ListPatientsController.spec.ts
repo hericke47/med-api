@@ -6,7 +6,7 @@ import createConnection from "@shared/infra/typeorm";
 
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
@@ -36,7 +36,7 @@ describe("List Patients", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -75,7 +75,7 @@ describe("List Patients", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,

@@ -38,7 +38,7 @@ export const createPatient = {
             },
           },
           example: {
-            birthDate: "09/01/2003",
+            birthDate: "2003-01-09",
             email: "patient-example@gmail.com",
             genderId: 1,
             height: 170,
@@ -232,7 +232,7 @@ export const getAndUpdateAndDeletePatient = {
             },
           },
           example: {
-            birthDate: "09/01/2003",
+            birthDate: "2003-01-09",
             email: "patient-example@gmail.com",
             genderId: 1,
             height: 170,

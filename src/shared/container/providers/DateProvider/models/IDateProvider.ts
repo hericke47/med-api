@@ -1,11 +1,8 @@
 interface IDateProvider {
-  compareInHours(start_date: Date, end_date: Date): number;
-  convertToUTC(date: Date): string;
-  dateNow(): Date;
-  compareInDays(start_date: Date, end_date: Date): number;
   addDays(days: number): Date;
-  addHours(hours: number): Date;
-  compareIfBefore(start_date: Date, end_date: Date): boolean;
+  compareIfBefore(startDate: Date, endDate: Date): boolean;
+  subtractMinutes(date: Date, minutes: number): Date;
+  addMinutes(date: Date, minutes: number): Date;
 }
 
 export { IDateProvider };
