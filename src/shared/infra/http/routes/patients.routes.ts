@@ -2,12 +2,14 @@ import { CreatePatientController } from "@modules/patients/useCases/CreatePatien
 import { Router } from "express";
 import { Joi, Segments, celebrate } from "celebrate";
 import { GetPatientController } from "@modules/patients/useCases/GetPatient/GetPatientController";
+import { ListPatientsController } from "@modules/patients/useCases/ListPatients/ListPatientsController";
 import { ensureDoctorAuthenticated } from "../middlewares/ensureDoctorAuthenticated";
 
 const patientsRouter = Router();
 
 const createPatientController = new CreatePatientController();
 const getPatientController = new GetPatientController();
+const listPatientsController = new ListPatientsController();
 
 patientsRouter.post(
   "/",
@@ -30,6 +32,12 @@ patientsRouter.get(
   "/:patientId",
   ensureDoctorAuthenticated,
   getPatientController.handle
+);
+
+patientsRouter.get(
+  "/",
+  ensureDoctorAuthenticated,
+  listPatientsController.handle
 );
 
 export default patientsRouter;
