@@ -7,6 +7,7 @@ import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/Fak
 import AppError from "@shared/errors/AppError";
 import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import FakeAppointmentRepository from "@modules/appointments/repositories/fakes/FakeAppointmentRepository";
+import { AppointmentStatusEnum } from "@modules/appointments/types/AppointmentStatus";
 import { CreateAppointmentUseCase } from "./CreateAppointmentUseCase";
 
 let fakeDoctorRepository: FakeDoctorRepository;
@@ -20,7 +21,6 @@ let dateProvider: DayjsDateProvider;
 
 let doctorId: string;
 let patientId: string;
-
 let appointmentDate: Date;
 let secondAppointmentDate: Date;
 
@@ -93,7 +93,9 @@ describe("Create Appointment", () => {
     });
 
     expect(createdAppointment).toHaveProperty("id");
-    expect(createdAppointment.appointment_status_id).toEqual(1);
+    expect(createdAppointment.appointment_status_id).toEqual(
+      AppointmentStatusEnum.PENDING
+    );
     expect(createdAppointment.active).toEqual(true);
   });
 
@@ -105,6 +107,16 @@ describe("Create Appointment", () => {
         patientId,
       })
     ).rejects.toEqual(new AppError("Doctor not found!"));
+  });
+
+  it("should not be able to create a new appointment if patient does not exists", async () => {
+    await expect(
+      createAppointment.execute({
+        date: appointmentDate,
+        doctorId,
+        patientId: "non-existent-patient-uuid",
+      })
+    ).rejects.toEqual(new AppError("Patient not found!"));
   });
 
   it("should not be able to create a new appointment in a past date", async () => {
