@@ -38,6 +38,15 @@ class UpdateAppointmentUseCase {
     appointmentId,
     appointmentStatusId,
   }: IRequest): Promise<Appointment> {
+    const appointmentStatus =
+      await this.appointmentRepository.findAppointmentStatusById(
+        appointmentStatusId
+      );
+
+    if (!appointmentStatus) {
+      throw new AppError("Appointment Status not found!");
+    }
+
     const doctor = await this.doctorRepository.findById(doctorId);
 
     if (!doctor) {

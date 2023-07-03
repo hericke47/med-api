@@ -1,10 +1,26 @@
 import { v4 as uuidV4 } from "uuid";
 import { Patient } from "@modules/patients/infra/typeorm/entities/Patient";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
+import { Gender } from "@modules/patients/infra/typeorm/entities/Gender";
+import { GendersEnum } from "@modules/patients/types/Gender";
 import IPatientRepository from "../models/IPatientRepository";
 
 class FakePatientRepository implements IPatientRepository {
   private patients: Patient[] = [];
+  private genders: Gender[] = [
+    {
+      id: GendersEnum.FEMININE,
+      name: "Feminine",
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+    {
+      id: GendersEnum.MASCULINE,
+      name: "Masculine",
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+  ];
 
   async create({
     birthDate,
@@ -94,6 +110,12 @@ class FakePatientRepository implements IPatientRepository {
     this.patients[findIndex] = patient;
 
     return patient;
+  }
+
+  async findGenderById(id: number): Promise<Gender | undefined> {
+    const findGender = this.genders.find((gender) => gender.id === id);
+
+    return findGender;
   }
 }
 

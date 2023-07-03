@@ -78,6 +78,9 @@ export const createAndListPatient = {
                 message: "Doctor not found!",
               },
               {
+                message: "Gender not found!",
+              },
+              {
                 message: "Email address already used.",
               },
               {
@@ -346,6 +349,9 @@ export const getAndUpdateAndDeletePatient = {
             example: [
               {
                 message: "Doctor not found!",
+              },
+              {
+                message: "Gender not found!",
               },
               {
                 message: "Patient not found!",

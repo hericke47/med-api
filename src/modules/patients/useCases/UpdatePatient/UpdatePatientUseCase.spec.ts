@@ -81,6 +81,45 @@ describe("Update Patient", () => {
     expect(updatedPatient).toEqual(findedUpdatedPatient);
   });
 
+  it("should not be able to update a patient if gender does not exists", async () => {
+    const nonExistentGender = NaN;
+
+    const doctor: ICreateDoctorDTO = {
+      name: "Doctor john Doe",
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    };
+
+    const createdDoctor = await createDoctor.execute(doctor);
+
+    const patient: ICreatePatientDTO = {
+      doctorId: createdDoctor.id,
+      birthDate: "09/01/2003",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    const createdPatient = await createPatient.execute(patient);
+
+    await expect(
+      updatePatient.execute({
+        doctorId: createdDoctor.id,
+        patientId: createdPatient.id,
+        birthDate: "2010-10-10",
+        email: "updated-email@gmail.com",
+        genderId: nonExistentGender,
+        height: 180,
+        name: "Updated Name",
+        phone: "4822222222",
+        weight: 88.2,
+      })
+    ).rejects.toEqual(new AppError("Gender not found!"));
+  });
+
   it("should not be able to update patient if doctor does not exists", async () => {
     await expect(
       updatePatient.execute({

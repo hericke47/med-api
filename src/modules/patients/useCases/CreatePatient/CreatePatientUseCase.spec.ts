@@ -64,6 +64,33 @@ describe("Create Patient", () => {
     expect(createdPatient).toHaveProperty("id");
   });
 
+  it("should not be able to create a new patient if gender does not exists", async () => {
+    const nonExistentGender = NaN;
+
+    const doctor: ICreateDoctorDTO = {
+      name: "Doctor john Doe",
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    };
+
+    const createdDoctor = await createDoctor.execute(doctor);
+
+    const patient: ICreatePatientDTO = {
+      doctorId: createdDoctor.id,
+      birthDate: "2003-01-09",
+      email: "patient-example@gmail.com",
+      genderId: nonExistentGender,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    await expect(createPatient.execute(patient)).rejects.toEqual(
+      new AppError("Gender not found!")
+    );
+  });
+
   it("should not be able to create a new patient if doctor does not exists", async () => {
     const patient: ICreatePatientDTO = {
       doctorId: "non-existent-doctor-uuid",

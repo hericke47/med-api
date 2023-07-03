@@ -4,12 +4,15 @@ import IAppointmentRepository from "@modules/appointments/repositories/models/IA
 import ICreateAppointmentDTO from "@modules/appointments/dtos/ICreateAppointmentDTO";
 import { AppointmentStatusEnum } from "@modules/appointments/types/AppointmentStatus";
 import { Appointment } from "../entities/Appointment";
+import { AppointmentStatus } from "../entities/AppointmentStatus";
 
 class AppointmentRepository implements IAppointmentRepository {
-  private ormRepository: Repository<Appointment>;
+  private ormAppointmentRepository: Repository<Appointment>;
+  private ormAppointmentStatusRepository: Repository<AppointmentStatus>;
 
   constructor() {
-    this.ormRepository = getRepository(Appointment);
+    this.ormAppointmentRepository = getRepository(Appointment);
+    this.ormAppointmentStatusRepository = getRepository(AppointmentStatus);
   }
 
   create({
@@ -18,14 +21,14 @@ class AppointmentRepository implements IAppointmentRepository {
     doctorId,
     patientId,
   }: ICreateAppointmentDTO): Promise<Appointment> {
-    const appointment = this.ormRepository.create({
+    const appointment = this.ormAppointmentRepository.create({
       appointment_status_id: appointmentStatusId,
       date,
       doctor_id: doctorId,
       patient_id: patientId,
     });
 
-    return this.ormRepository.save({
+    return this.ormAppointmentRepository.save({
       ...appointment,
     });
   }
@@ -45,7 +48,7 @@ class AppointmentRepository implements IAppointmentRepository {
       Object.assign(where, { id: Not(appointmentId) });
     }
 
-    const appointment = await this.ormRepository.findOne({
+    const appointment = await this.ormAppointmentRepository.findOne({
       where,
     });
 
@@ -58,7 +61,7 @@ class AppointmentRepository implements IAppointmentRepository {
     greatestDate: string,
     appointmentId?: string
   ): Promise<Appointment | undefined> {
-    const appointment = await this.ormRepository
+    const appointment = await this.ormAppointmentRepository
       .createQueryBuilder("appointment")
       .where("appointment.date BETWEEN :lowestDate AND :greatestDate", {
         lowestDate,
@@ -81,14 +84,14 @@ class AppointmentRepository implements IAppointmentRepository {
   }
 
   public async save(appointment: Appointment): Promise<Appointment> {
-    return this.ormRepository.save(appointment);
+    return this.ormAppointmentRepository.save(appointment);
   }
 
   async findByIdAndDoctorId(
     id: string,
     doctorId: string
   ): Promise<Appointment | undefined> {
-    const appointment = await this.ormRepository.findOne({
+    const appointment = await this.ormAppointmentRepository.findOne({
       where: {
         id,
         doctor_id: doctorId,
@@ -96,6 +99,20 @@ class AppointmentRepository implements IAppointmentRepository {
     });
 
     return appointment;
+  }
+
+  async findAppointmentStatusById(
+    id: number
+  ): Promise<AppointmentStatus | undefined> {
+    const appointmentStatus = await this.ormAppointmentStatusRepository.findOne(
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    return appointmentStatus;
   }
 }
 

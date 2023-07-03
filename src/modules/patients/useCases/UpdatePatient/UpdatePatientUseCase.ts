@@ -37,6 +37,12 @@ class UpdatePatientUseCase {
     weight,
     patientId,
   }: IRequest): Promise<Patient> {
+    const gender = await this.patientRepository.findGenderById(genderId);
+
+    if (!gender) {
+      throw new AppError("Gender not found!");
+    }
+
     const doctor = await this.doctorRepository.findById(doctorId);
 
     if (!doctor) {
