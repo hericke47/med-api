@@ -3,7 +3,7 @@ import FakeDoctorRepository from "@modules/doctors/repositories/fakes/FakeDoctor
 import { CreateDoctorUseCase } from "@modules/doctors/useCases/CreateDoctor/CreateDoctorUseCase";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
 import FakePatientRepository from "@modules/patients/repositories/fakes/FakePatientRepository";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/FakeHashProvider";
 import AppError from "@shared/errors/AppError";
 
@@ -42,7 +42,7 @@ describe("Create Patient", () => {
 
     const patient: ICreatePatientDTO = {
       doctorId: createdDoctor.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -67,7 +67,7 @@ describe("Create Patient", () => {
   it("should not be able to create a new patient if doctor does not exists", async () => {
     const patient: ICreatePatientDTO = {
       doctorId: "non-existent-doctor-uuid",
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -92,7 +92,7 @@ describe("Create Patient", () => {
 
     const patient: ICreatePatientDTO = {
       doctorId: createdDoctor.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -103,7 +103,7 @@ describe("Create Patient", () => {
 
     const patientWithSameEmail: ICreatePatientDTO = {
       doctorId: createdDoctor.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 171,
@@ -130,7 +130,7 @@ describe("Create Patient", () => {
 
     const patient: ICreatePatientDTO = {
       doctorId: createdDoctor.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -141,7 +141,7 @@ describe("Create Patient", () => {
 
     const patientWithSamePhoneNumber: ICreatePatientDTO = {
       doctorId: createdDoctor.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "another-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 171,

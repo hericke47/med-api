@@ -21,11 +21,11 @@ patientsRouter.post(
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      birthDate: Joi.date().required(),
+      birthDate: Joi.date().iso().required(),
       genderId: Joi.number().required(),
-      height: Joi.number().required(),
-      weight: Joi.number().required(),
       phone: Joi.string().required(),
+      height: Joi.number().integer().positive().required(),
+      weight: Joi.number().positive().required(),
     },
   }),
   ensureDoctorAuthenticated,
@@ -34,6 +34,11 @@ patientsRouter.post(
 
 patientsRouter.get(
   "/:patientId",
+  celebrate({
+    [Segments.PARAMS]: {
+      patientId: Joi.string().uuid().required(),
+    },
+  }),
   ensureDoctorAuthenticated,
   getPatientController.handle
 );
@@ -50,11 +55,14 @@ patientsRouter.put(
     [Segments.BODY]: {
       name: Joi.string(),
       email: Joi.string().email(),
-      birthDate: Joi.date(),
+      birthDate: Joi.date().iso(),
       genderId: Joi.number(),
       height: Joi.number(),
       weight: Joi.number(),
       phone: Joi.string(),
+    },
+    [Segments.PARAMS]: {
+      patientId: Joi.string().uuid().required(),
     },
   }),
   ensureDoctorAuthenticated,
@@ -63,6 +71,11 @@ patientsRouter.put(
 
 patientsRouter.delete(
   "/:patientId",
+  celebrate({
+    [Segments.PARAMS]: {
+      patientId: Joi.string().uuid().required(),
+    },
+  }),
   ensureDoctorAuthenticated,
   deletePatientController.handle
 );

@@ -3,7 +3,7 @@ import FakeDoctorRepository from "@modules/doctors/repositories/fakes/FakeDoctor
 import { CreateDoctorUseCase } from "@modules/doctors/useCases/CreateDoctor/CreateDoctorUseCase";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
 import FakePatientRepository from "@modules/patients/repositories/fakes/FakePatientRepository";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/FakeHashProvider";
 import AppError from "@shared/errors/AppError";
 
@@ -63,7 +63,7 @@ describe("Update Patient", () => {
     const updatedPatient = await updatePatient.execute({
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "updated-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,
@@ -146,7 +146,7 @@ describe("Update Patient", () => {
     const updatePatientWithSameEmail = {
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "already-in-use-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,
@@ -185,7 +185,7 @@ describe("Update Patient", () => {
     const updatePatientWithSameEmail = {
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "another-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,

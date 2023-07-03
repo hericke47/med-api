@@ -7,10 +7,13 @@ import createConnection from "@shared/infra/typeorm";
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
 import { GendersEnum } from "@modules/patients/types/Gender";
+import { AppointmentStatusEnum } from "@modules/appointments/types/AppointmentStatus";
 
 let connection: Connection;
 let doctorUUID: string;
-describe("Update Patient", () => {
+let appointmentDate: Date;
+let secondAppointmentDate: Date;
+describe("Create Appointment", () => {
   beforeAll(async () => {
     connection = await createConnection();
     await connection.runMigrations();
@@ -22,6 +25,20 @@ describe("Update Patient", () => {
       `INSERT INTO doctors(id, name, email, password, created_at, updated_at, active)
         values('${doctorUUID}', 'Doctor john Doe', 'doctorjhondoe@example.com', '${password}', 'now()', 'now()', true)`
     );
+
+    const currentDate = new Date();
+
+    appointmentDate = new Date(
+      `${
+        currentDate.getFullYear() + 1
+      }-${currentDate.getMonth()}-${currentDate.getDate()} 14:30:00`
+    );
+
+    secondAppointmentDate = new Date(
+      `${
+        currentDate.getFullYear() + 1
+      }-${currentDate.getMonth()}-${currentDate.getDate()} 15:00:00`
+    );
   });
 
   afterAll(async () => {
@@ -29,7 +46,7 @@ describe("Update Patient", () => {
     await connection.close();
   });
 
-  it("should be able to update patient", async () => {
+  it("should be able to create a new appointment", async () => {
     const authentication = await request(app).post("/sessions").send({
       email: "doctorjhondoe@example.com",
       password: "example-password",
@@ -41,17 +58,7 @@ describe("Update Patient", () => {
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
-      weight: 68.8,
-    };
-
-    const updatedPatient = {
-      birthDate: "2003-01-09",
-      email: "updated-patient-example@gmail.com",
-      genderId: GendersEnum.MASCULINE,
-      height: 170,
-      name: "Updated Patient Example",
-      phone: "4812344444",
+      phone: "(53) 3477-7182",
       weight: 68.8,
     };
 
@@ -60,27 +67,25 @@ describe("Update Patient", () => {
       .send(patient)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
-    const updatedPatientResponse = await request(app)
-      .put(`/patients/${createdPatient.body.id}`)
-      .send(updatedPatient)
-      .set("Authorization", `bearer ${authentication.body.token}`);
-
     const response = await request(app)
-      .get(`/patients/${createdPatient.body.id}`)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: appointmentDate,
+      })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
-    expect(response.body.name).toEqual(updatedPatientResponse.body.name);
-    expect(response.body.email).toEqual(updatedPatientResponse.body.email);
-    expect(response.body.height).toEqual(updatedPatientResponse.body.height);
-    expect(response.body.phone).toEqual(updatedPatientResponse.body.phone);
+    expect(response.body.appointment_status_id).toEqual(
+      AppointmentStatusEnum.PENDING
+    );
+    expect(response.body.patient_id).toEqual(createdPatient.body.id);
   });
 
-  it("should not be able to update patient if doctor does not exists", async () => {
+  it("should not be able to create a new appointment if dotor does not exists", async () => {
     const createdDoctor = await request(app).post("/doctors").send({
       name: "Another Doctor john Doe",
-      email: "another-doctorjhondoe@example.com",
+      email: "anotherdoctorjhondoe@example.com",
       password: "another-example-password",
     });
 
@@ -91,21 +96,11 @@ describe("Update Patient", () => {
 
     const patient = {
       birthDate: "2003-01-09",
-      email: "jhon-doe@gmail.com",
+      email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
-      weight: 68.8,
-    };
-
-    const updatedPatient = {
-      birthDate: "2003-01-09",
-      email: "updated-john-doe@gmail.com",
-      genderId: GendersEnum.MASCULINE,
-      height: 170,
-      name: "Updated Patient Example",
-      phone: "48123224444",
+      phone: "(98) 2827-3641",
       weight: 68.8,
     };
 
@@ -119,8 +114,10 @@ describe("Update Patient", () => {
     );
 
     const response = await request(app)
-      .put(`/patients/${createdPatient.body.id}`)
-      .send(updatedPatient)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: appointmentDate,
+      })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);
@@ -128,33 +125,32 @@ describe("Update Patient", () => {
     expect(response.body.message).toEqual("Doctor not found!");
   });
 
-  it("should not be able to update patient if patient does not exists", async () => {
-    const createdDoctor = await request(app).post("/doctors").send({
-      name: "Another Doctor john Doe",
-      email: "another-doctorjhondoe@example.com",
-      password: "another-example-password",
-    });
-
+  it("should not be able to create a new appointment if patient does not exists", async () => {
     const authentication = await request(app).post("/sessions").send({
-      email: createdDoctor.body.email,
-      password: "another-example-password",
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
     });
 
-    const updatedPatient = {
+    const patient = {
       birthDate: "2003-01-09",
-      email: "updated-john-doe@gmail.com",
-      genderId: GendersEnum.MASCULINE,
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
       height: 170,
-      name: "Updated Patient Example",
-      phone: "48123224444",
+      name: "Patient Example",
+      phone: "(84) 3380-1791",
       weight: 68.8,
     };
 
-    const nonExistentPatientUUID = uuidV4();
+    await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .put(`/patients/${nonExistentPatientUUID}`)
-      .send(updatedPatient)
+      .post(`/appointments/${uuidV4()}`)
+      .send({
+        date: appointmentDate,
+      })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);
@@ -162,31 +158,19 @@ describe("Update Patient", () => {
     expect(response.body.message).toEqual("Patient not found!");
   });
 
-  it("should not be able to update patient if email address is already in use", async () => {
+  it("should not be able to create a new appointment in a past date", async () => {
     const authentication = await request(app).post("/sessions").send({
       email: "doctorjhondoe@example.com",
       password: "example-password",
     });
 
-    const sameEmail = "patient-example-email@gmail.com";
-
     const patient = {
       birthDate: "2003-01-09",
-      email: sameEmail,
+      email: "another-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
-      weight: 68.8,
-    };
-
-    const updatePatientWithSameEmail = {
-      birthDate: "2003-01-09",
-      email: sameEmail,
-      genderId: GendersEnum.MASCULINE,
-      height: 170,
-      name: "Updated Patient Example",
-      phone: "4812344444",
+      phone: "(74) 3837-7738",
       weight: 68.8,
     };
 
@@ -196,40 +180,32 @@ describe("Update Patient", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .put(`/patients/${createdPatient.body.id}`)
-      .send(updatePatientWithSameEmail)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: "1990-07-22 12:10:00",
+      })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual("Email address already used.");
+    expect(response.body.message).toEqual(
+      "You can't create an appointment on a past date."
+    );
   });
 
-  it("should not be able to update patient if phone number is already in use", async () => {
+  it("should not be able to create a new appointment if already exist appointment on this date", async () => {
     const authentication = await request(app).post("/sessions").send({
       email: "doctorjhondoe@example.com",
       password: "example-password",
     });
 
-    const samePhoneNumber = "480099923912";
-
     const patient = {
       birthDate: "2003-01-09",
-      email: "new-patient-example@gmail.com",
+      email: "other-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: samePhoneNumber,
-      weight: 68.8,
-    };
-
-    const updatePatientWithSamePhone = {
-      birthDate: "2003-01-09",
-      email: "patient-example-another-email@gmail.com",
-      genderId: GendersEnum.MASCULINE,
-      height: 170,
-      name: "Updated Patient Example",
-      phone: samePhoneNumber,
+      phone: "(63) 3235-3604",
       weight: 68.8,
     };
 
@@ -238,13 +214,66 @@ describe("Update Patient", () => {
       .send(patient)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
+    await request(app)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: appointmentDate,
+      })
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
     const response = await request(app)
-      .put(`/patients/${createdPatient.body.id}`)
-      .send(updatePatientWithSamePhone)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: appointmentDate,
+      })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual("Phone number already used.");
+    expect(response.body.message).toEqual(
+      "Already exists an appointment on this date"
+    );
+  });
+
+  it("should not be able to create a new appointment if already exist appointment on this range", async () => {
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "2003-01-09",
+      email: "jhon-doe-patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "(66) 3828-7384",
+      weight: 68.8,
+    };
+
+    const createdPatient = await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    await request(app)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: appointmentDate,
+      })
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    const response = await request(app)
+      .post(`/appointments/${createdPatient.body.id}`)
+      .send({
+        date: secondAppointmentDate,
+      })
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual(
+      "There is already an appointment in the range of this appointment"
+    );
   });
 });
