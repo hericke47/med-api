@@ -1,4 +1,4 @@
-import { createAppointment } from "./appointments.swagger";
+import { createAppointment, updateAppointment } from "./appointments.swagger";
 import { createDoctor } from "./doctors.swagger";
 import {
   createAndListPatient,
@@ -13,4 +13,5 @@ export default {
   "/patients": createAndListPatient,
   "/patients/{patientId}": getAndUpdateAndDeletePatient,
   "/appointments": createAppointment,
+  "/appointments/{appointmentId}": updateAppointment,
 };
