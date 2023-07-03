@@ -114,6 +114,13 @@ class AppointmentRepository implements IAppointmentRepository {
 
     return appointmentStatus;
   }
+
+  async deleteById(id: string): Promise<void> {
+    this.ormAppointmentRepository.update(
+      { id },
+      { appointment_status_id: AppointmentStatusEnum.CANCELED }
+    );
+  }
 }
 
 export default AppointmentRepository;
