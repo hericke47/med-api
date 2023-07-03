@@ -25,7 +25,7 @@ class DeletePatientUseCase {
       throw new AppError("Doctor not found!");
     }
 
-    const patient = await this.patientRepository.getByDoctorIdAndPatientId(
+    const patient = await this.patientRepository.findByDoctorIdAndPatientId(
       doctorId,
       patientId
     );

@@ -3,13 +3,20 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 
 export default interface IAppointmentRepository {
   create(data: ICreateAppointmentDTO): Promise<Appointment>;
-  getByDateAndDoctorId(
+  findByDateAndDoctorId(
     doctorId: string,
-    date: Date
+    date: Date,
+    appointmentId?: string
   ): Promise<Appointment | undefined>;
   findByIntervalAndDoctorId(
     doctorId: string,
     lowestDate: string,
-    greatestDate: string
+    greatestDate: string,
+    appointmentId?: string
+  ): Promise<Appointment | undefined>;
+  save(appointment: Appointment): Promise<Appointment>;
+  findByIdAndDoctorId(
+    id: string,
+    doctorId: string
   ): Promise<Appointment | undefined>;
 }

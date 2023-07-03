@@ -38,7 +38,7 @@ class PatientRepository implements IPatientRepository {
     });
   }
 
-  async getByDoctorIdAndPatientId(
+  async findByDoctorIdAndPatientId(
     doctorId: string,
     patientId: string
   ): Promise<Patient | undefined> {
@@ -57,7 +57,7 @@ class PatientRepository implements IPatientRepository {
     return patients;
   }
 
-  async getByEmailAndDoctorId(
+  async findByEmailAndDoctorId(
     email: string,
     doctorId: string
   ): Promise<Patient | undefined> {
@@ -68,7 +68,7 @@ class PatientRepository implements IPatientRepository {
     return patient;
   }
 
-  async getByPhoneAndDoctorId(
+  async findByPhoneAndDoctorId(
     phone: string,
     doctorId: string
   ): Promise<Patient | undefined> {

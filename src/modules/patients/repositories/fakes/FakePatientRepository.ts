@@ -39,7 +39,7 @@ class FakePatientRepository implements IPatientRepository {
     return patient;
   }
 
-  async getByDoctorIdAndPatientId(
+  async findByDoctorIdAndPatientId(
     doctorId: string,
     patientId: string
   ): Promise<Patient | undefined> {
@@ -59,7 +59,7 @@ class FakePatientRepository implements IPatientRepository {
     );
   }
 
-  async getByEmailAndDoctorId(
+  async findByEmailAndDoctorId(
     email: string,
     doctorId: string
   ): Promise<Patient | undefined> {
@@ -72,7 +72,7 @@ class FakePatientRepository implements IPatientRepository {
 
     return findPatient;
   }
-  async getByPhoneAndDoctorId(
+  async findByPhoneAndDoctorId(
     phone: string,
     doctorId: string
   ): Promise<Patient | undefined> {

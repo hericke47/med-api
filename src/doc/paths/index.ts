@@ -12,5 +12,5 @@ export default {
   "/doctors": createDoctor,
   "/patients": createAndListPatient,
   "/patients/{patientId}": getAndUpdateAndDeletePatient,
-  "/appointments/{patientId}": createAppointment,
+  "/appointments": createAppointment,
 };

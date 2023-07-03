@@ -7,11 +7,11 @@ class CreateAppointmentController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { date, patientId } = request.body;
 
-    const createAppointmentController = container.resolve(
+    const createAppointmentUseCase = container.resolve(
       CreateAppointmentUseCase
     );
 
-    const appointment = await createAppointmentController.execute({
+    const appointment = await createAppointmentUseCase.execute({
       date,
       doctorId: request.doctor.id,
       patientId,

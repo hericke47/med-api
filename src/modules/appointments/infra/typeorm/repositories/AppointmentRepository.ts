@@ -1,4 +1,4 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Not, Repository } from "typeorm";
 
 import IAppointmentRepository from "@modules/appointments/repositories/models/IAppointmentRepository";
 import ICreateAppointmentDTO from "@modules/appointments/dtos/ICreateAppointmentDTO";
@@ -27,21 +27,26 @@ class AppointmentRepository implements IAppointmentRepository {
 
     return this.ormRepository.save({
       ...appointment,
-      active: true,
     });
   }
 
-  async getByDateAndDoctorId(
+  async findByDateAndDoctorId(
     doctorId: string,
-    date: Date
+    date: Date,
+    appointmentId?: string
   ): Promise<Appointment | undefined> {
+    const where = {
+      doctor_id: doctorId,
+      date,
+      appointment_status_id: AppointmentStatusEnum.PENDING,
+    };
+
+    if (appointmentId) {
+      Object.assign(where, { id: Not(appointmentId) });
+    }
+
     const appointment = await this.ormRepository.findOne({
-      where: {
-        doctor_id: doctorId,
-        active: true,
-        date,
-        appointment_status_id: AppointmentStatusEnum.PENDING,
-      },
+      where,
     });
 
     return appointment;
@@ -50,7 +55,8 @@ class AppointmentRepository implements IAppointmentRepository {
   async findByIntervalAndDoctorId(
     doctorId: string,
     lowestDate: string,
-    greatestDate: string
+    greatestDate: string,
+    appointmentId?: string
   ): Promise<Appointment | undefined> {
     const appointment = await this.ormRepository
       .createQueryBuilder("appointment")
@@ -61,11 +67,33 @@ class AppointmentRepository implements IAppointmentRepository {
       .andWhere("appointment.doctor_id = :doctorId", {
         doctorId,
       })
-      .andWhere("appointment.active = true")
       .andWhere("appointment.appointment_status_id = :appointmentStatusId", {
         appointmentStatusId: AppointmentStatusEnum.PENDING,
-      })
-      .getOne();
+      });
+
+    if (appointmentId) {
+      appointment.andWhere("appointment.id != :appointmentId", {
+        appointmentId,
+      });
+    }
+
+    return appointment.getOne();
+  }
+
+  public async save(appointment: Appointment): Promise<Appointment> {
+    return this.ormRepository.save(appointment);
+  }
+
+  async findByIdAndDoctorId(
+    id: string,
+    doctorId: string
+  ): Promise<Appointment | undefined> {
+    const appointment = await this.ormRepository.findOne({
+      where: {
+        id,
+        doctor_id: doctorId,
+      },
+    });
 
     return appointment;
   }

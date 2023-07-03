@@ -8,16 +8,6 @@ export const createAppointment = {
         bearerAuth: [],
       },
     ],
-    parameters: [
-      {
-        schema: {
-          type: "string",
-        },
-        in: "path",
-        name: "patientId",
-        required: true,
-      },
-    ],
     requestBody: {
       content: {
         "application/json": {
@@ -27,10 +17,14 @@ export const createAppointment = {
               date: {
                 type: "string",
               },
+              patientId: {
+                type: "string",
+              },
             },
           },
           example: {
             date: "2023-07-23 12:12:00",
+            patientId: "patient-uuid",
           },
         },
       },

@@ -28,13 +28,12 @@ class FakeAppointmentRepository implements IAppointmentRepository {
     return appointment;
   }
 
-  async getByDateAndDoctorId(
+  async findByDateAndDoctorId(
     doctorId: string,
     date: Date
   ): Promise<Appointment | undefined> {
     const appointment = this.appointments.find(
       (appointment) =>
-        appointment.active === true &&
         appointment.doctor_id === doctorId &&
         appointment.date.getTime() ===
           dayjs(date).utc(true).toDate().getTime() &&
@@ -47,16 +46,40 @@ class FakeAppointmentRepository implements IAppointmentRepository {
   async findByIntervalAndDoctorId(
     doctorId: string,
     lowestDate: string,
-    greatestDate: string
+    greatestDate: string,
+    appointmentId?: string
   ): Promise<Appointment | undefined> {
     const appointment = this.appointments.find(
       (appointment) =>
         appointment.doctor_id === doctorId &&
         appointment.date >= new Date(lowestDate) &&
-        appointment.date <= new Date(greatestDate)
+        appointment.date <= new Date(greatestDate) &&
+        appointment.id !== appointmentId
     );
 
     return appointment;
+  }
+
+  async save(appointment: Appointment): Promise<Appointment> {
+    const findIndex = this.appointments.findIndex(
+      (findAppointment) => findAppointment.id === appointment.id
+    );
+
+    this.appointments[findIndex] = appointment;
+
+    return appointment;
+  }
+
+  async findByIdAndDoctorId(
+    id: string,
+    doctorId: string
+  ): Promise<Appointment | undefined> {
+    const findAppointment = this.appointments.find(
+      (appointment) =>
+        appointment.id === id && appointment.doctor_id === doctorId
+    );
+
+    return findAppointment;
   }
 }
 

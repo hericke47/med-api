@@ -1,21 +1,22 @@
-import appointment from "@config/appointment";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import IAppointmentRepository from "@modules/appointments/repositories/models/IAppointmentRepository";
-import { AppointmentStatusEnum } from "@modules/appointments/types/AppointmentStatus";
 import IDoctorRepository from "@modules/doctors/repositories/models/IDoctorRepository";
 import IPatientRepository from "@modules/patients/repositories/models/IPatientRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/models/IDateProvider";
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
+import appointmentConfig from "@config/appointment";
 
 interface IRequest {
   date: Date;
   patientId: string;
   doctorId: string;
+  appointmentId: string;
+  appointmentStatusId: number;
 }
 
 @injectable()
-class CreateAppointmentUseCase {
+class UpdateAppointmentUseCase {
   constructor(
     @inject("DoctorRepository")
     private doctorRepository: IDoctorRepository,
@@ -30,7 +31,13 @@ class CreateAppointmentUseCase {
     private dateProvider: IDateProvider
   ) {}
 
-  async execute({ doctorId, date, patientId }: IRequest): Promise<Appointment> {
+  async execute({
+    doctorId,
+    date,
+    patientId,
+    appointmentId,
+    appointmentStatusId,
+  }: IRequest): Promise<Appointment> {
     const doctor = await this.doctorRepository.findById(doctorId);
 
     if (!doctor) {
@@ -46,18 +53,31 @@ class CreateAppointmentUseCase {
       throw new AppError("Patient not found!");
     }
 
+    const appointment = await this.appointmentRepository.findByIdAndDoctorId(
+      appointmentId,
+      doctor.id
+    );
+
+    if (!appointment) {
+      throw new AppError("Appointment does not exists!");
+    }
+
     if (this.dateProvider.compareIfBefore(new Date(date), new Date())) {
       throw new AppError("You can't create an appointment on a past date.");
     }
 
     const alreadyExistentAppointmentOnThisDate =
-      await this.appointmentRepository.findByDateAndDoctorId(doctorId, date);
+      await this.appointmentRepository.findByDateAndDoctorId(
+        doctorId,
+        date,
+        appointmentId
+      );
 
     if (alreadyExistentAppointmentOnThisDate) {
       throw new AppError("Already exists an appointment on this date");
     }
 
-    const { appointmentDuration } = appointment;
+    const { appointmentDuration } = appointmentConfig;
 
     const lowestDate = this.dateProvider
       .subtractMinutes(date, appointmentDuration)
@@ -71,7 +91,8 @@ class CreateAppointmentUseCase {
       await this.appointmentRepository.findByIntervalAndDoctorId(
         doctor.id,
         lowestDate,
-        greatestDate
+        greatestDate,
+        appointmentId
       );
 
     if (appointmentAtTheSameTime) {
@@ -80,15 +101,16 @@ class CreateAppointmentUseCase {
       );
     }
 
-    const createdAppointment = await this.appointmentRepository.create({
-      appointmentStatusId: AppointmentStatusEnum.PENDING,
-      date,
-      doctorId,
-      patientId,
-    });
+    appointment.appointment_status_id = appointmentStatusId;
+    appointment.patient_id = patientId;
+    appointment.date = date;
 
-    return createdAppointment;
+    const updatedAppointment = await this.appointmentRepository.save(
+      appointment
+    );
+
+    return updatedAppointment;
   }
 }
 
-export { CreateAppointmentUseCase };
+export { UpdateAppointmentUseCase };

@@ -73,7 +73,7 @@ describe("Update Patient", () => {
     });
 
     const findedUpdatedPatient =
-      await fakePatientRepository.getByDoctorIdAndPatientId(
+      await fakePatientRepository.findByDoctorIdAndPatientId(
         createdDoctor.id,
         createdPatient.id
       );

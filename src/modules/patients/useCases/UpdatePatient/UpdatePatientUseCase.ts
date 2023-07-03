@@ -43,7 +43,7 @@ class UpdatePatientUseCase {
       throw new AppError("Doctor not found!");
     }
 
-    const patient = await this.patientRepository.getByDoctorIdAndPatientId(
+    const patient = await this.patientRepository.findByDoctorIdAndPatientId(
       doctorId,
       patientId
     );
@@ -53,14 +53,14 @@ class UpdatePatientUseCase {
     }
 
     const alreadyExistentPatientEmailByDoctor =
-      await this.patientRepository.getByEmailAndDoctorId(email, doctorId);
+      await this.patientRepository.findByEmailAndDoctorId(email, doctorId);
 
     if (alreadyExistentPatientEmailByDoctor) {
       throw new AppError("Email address already used.");
     }
 
     const alreadyExistentPatientPhoneByDoctor =
-      await this.patientRepository.getByPhoneAndDoctorId(phone, doctorId);
+      await this.patientRepository.findByPhoneAndDoctorId(phone, doctorId);
 
     if (alreadyExistentPatientPhoneByDoctor) {
       throw new AppError("Phone number already used.");
