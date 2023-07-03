@@ -68,9 +68,10 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
@@ -114,9 +115,10 @@ describe("Create Appointment", () => {
     );
 
     const response = await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
@@ -147,9 +149,10 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .post(`/appointments/${uuidV4()}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: uuidV4(),
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
@@ -180,9 +183,10 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: "1990-07-22 12:10:00",
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
@@ -215,16 +219,18 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
@@ -257,16 +263,18 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: appointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .post(`/appointments/${createdPatient.body.id}`)
+      .post(`/appointments`)
       .send({
         date: secondAppointmentDate,
+        patientId: createdPatient.body.id,
       })
       .set("Authorization", `bearer ${authentication.body.token}`);
 

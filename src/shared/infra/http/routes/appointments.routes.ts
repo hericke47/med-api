@@ -9,10 +9,11 @@ const appointmentsRouter = Router();
 const createAppointmentController = new CreateAppointmentController();
 
 appointmentsRouter.post(
-  "/:patientId",
+  "/",
   celebrate({
     [Segments.BODY]: {
       date: Joi.date().iso().required(),
+      patientId: Joi.string().uuid().required(),
     },
   }),
   ensureDoctorAuthenticated,

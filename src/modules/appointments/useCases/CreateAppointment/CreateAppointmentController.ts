@@ -5,8 +5,7 @@ import { CreateAppointmentUseCase } from "./CreateAppointmentUseCase";
 
 class CreateAppointmentController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { date } = request.body;
-    const { patientId } = request.params;
+    const { date, patientId } = request.body;
 
     const createAppointmentController = container.resolve(
       CreateAppointmentUseCase
