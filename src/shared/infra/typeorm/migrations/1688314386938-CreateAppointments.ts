@@ -42,10 +42,6 @@ export class CreateAppointments1688314386938 implements MigrationInterface {
             type: "timestamp",
             default: "now()",
           },
-          {
-            name: "active",
-            type: "boolean",
-          },
         ],
         foreignKeys: [
           {

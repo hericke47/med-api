@@ -50,9 +50,6 @@ class Appointment {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ type: "boolean" })
-  active: boolean;
-
   constructor() {
     if (!this.id) {
       this.id = uuidV4();

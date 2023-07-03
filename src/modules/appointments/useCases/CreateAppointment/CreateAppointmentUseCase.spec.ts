@@ -96,7 +96,6 @@ describe("Create Appointment", () => {
     expect(createdAppointment.appointment_status_id).toEqual(
       AppointmentStatusEnum.PENDING
     );
-    expect(createdAppointment.active).toEqual(true);
   });
 
   it("should not be able to create a new appointment if doctor does not exists", async () => {

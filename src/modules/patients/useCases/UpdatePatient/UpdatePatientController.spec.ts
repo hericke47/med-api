@@ -77,6 +77,49 @@ describe("Update Patient", () => {
     expect(response.body.phone).toEqual(updatedPatientResponse.body.phone);
   });
 
+  it("should not be able to update patient if gender does not exists", async () => {
+    const nonExistentGender = Math.floor(Math.random() * 1000) + 300;
+
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "2003-01-09",
+      email: "another-to-update-patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "55 98353-0129",
+      weight: 68.8,
+    };
+
+    const updatedPatient = {
+      birthDate: "2003-01-09",
+      email: "another-updated-patient-example@gmail.com",
+      genderId: nonExistentGender,
+      height: 170,
+      name: "Updated Patient Example",
+      phone: "97 7101-5404",
+      weight: 68.8,
+    };
+
+    const createdPatient = await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    const response = await request(app)
+      .put(`/patients/${createdPatient.body.id}`)
+      .send(updatedPatient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Gender not found!");
+  });
+
   it("should not be able to update patient if doctor does not exists", async () => {
     const createdDoctor = await request(app).post("/doctors").send({
       name: "Another Doctor john Doe",
