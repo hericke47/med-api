@@ -123,10 +123,16 @@ docker-compose logs
 
 Sendo possível usar a flag -f para acompanhar os logs em tempo real.
 
-**Como parar a API**
+**Como parar os containers**
 
 ```bash
 docker-compose stop
+```
+
+**Como desfazer o container da api**
+
+```bash
+docker-compose down
 ```
 
 ## Documentação
@@ -148,11 +154,11 @@ De maneira simplificada o Domain-Driven Design é uma maneira de construir softw
     - **modules**: *Contém os arquivos referentes a cada módulo do código. É importante notar que nem sempre os módulos correspondem às entidades (modelos) do Banco de Dados, pois podem existir módulos que possuem mais de uma entidade (ex.: módulo Doctors possui as entidades Doctor.ts e DoctorTokens.ts). Nesse caso, o módulo Doctors é todo o código que faz parte desse grupo.*
         - **doctors**: *Contém os arquivos referentes ao módulo Doutores.*
             - **dtos**: *Contém os arquivos referentes aos DTOs (Data Transfer Object), que representam os objetos de dados que são passados como argumentos de uma função.*
-            - **infra**: *Contém os arquivos referentes a parte de infraestrutura do código.*
+            - **infra**: *Contém os arquivos referentes a parte de infraestrutura do código ou seja, a comunicação externa com bancos de dados ou outras APIs.*
                 - **typeorm**: *Contém os arquivos referentes ao TypeORM.*
                     - **entities**: *Contém os arquivos referentes às entidades do Banco de Dados representadas no programa.*
                     - **repositories**: *Contém os arquivos referentes aos repositories. Eles são os únicos responsáveis pela interação do programa com o Banco de Dados. Portanto, toda operação que depender do BD deverá passar por eles. Como está na pasta infra, essa é a parte do repository que implementa a lógica de comunicação com o BD no TypeORM.*
-            - **repositories**: *Contém os arquivos referentes aos repositories. Eles são os únicos responsáveis pela interação do programa com o Banco de Dados. Portanto, toda operação que depender do BD deverá passar por eles. Como está fora da pasta infra, essa é a parte do repository que se comunica com a lógica implementada na infra, sem depender da implementação da lib.*
+            - **repositories**: *Contém os arquivos referentes aos repositories. Eles são os únicos responsáveis pela interação do programa com o Banco de Dados. Portanto, toda operação que depender do BD deverá passar por eles. Como está fora da pasta infra, é a definição do protocolo de comunicação (interfaces) entre a regra de negócio (useCases) e a implementação de acesso a dados (repositories dentro da pasta infra).*
                 - **fakes**: *Contém o repositório fake, que simula as operações do repositório sem se comunicar com o Banco de Dados. Utilizado para realização de testes.*
             - **useCases**: *Contém os arquivos referentes aos casos de uso. Onde vão conter pastas com contextos de funcionalidade como **CreateDoctor** e dentro desses contextos vão conter o controlador e o useCase que é onde ficará toda a regra de negócio da funcionalidade*
             - **views**: *Contém os arquivos que serão utilizados como templates no envio de emails.*
