@@ -31,7 +31,7 @@ class DeleteAppointmentUseCase {
     );
 
     if (!appointment) {
-      throw new AppError("Appointment does not exists!");
+      throw new AppError("Appointment not found!");
     }
 
     await this.appointmentRepository.deleteById(appointment.id);

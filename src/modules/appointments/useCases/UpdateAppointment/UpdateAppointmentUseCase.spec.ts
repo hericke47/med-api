@@ -188,7 +188,7 @@ describe("Update Appointment", () => {
         doctorId,
         patientId,
       })
-    ).rejects.toEqual(new AppError("Appointment does not exists!"));
+    ).rejects.toEqual(new AppError("Appointment not found!"));
   });
 
   it("should not be able to update appointment in a past date", async () => {

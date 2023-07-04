@@ -306,7 +306,7 @@ describe("Update Appointment", () => {
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual("Appointment does not exists!");
+    expect(response.body.message).toEqual("Appointment not found!");
   });
 
   it("should not be able to update appointment in a past date", async () => {
