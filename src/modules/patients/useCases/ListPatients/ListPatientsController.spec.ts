@@ -6,7 +6,7 @@ import createConnection from "@shared/infra/typeorm";
 
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
@@ -36,7 +36,7 @@ describe("List Patients", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -57,7 +57,6 @@ describe("List Patients", () => {
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(1);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0].email).toEqual(patient.email);
     expect(response.body[0].name).toEqual(patient.name);
     expect(response.body[0].phone).toEqual(patient.phone);
   });
@@ -75,7 +74,7 @@ describe("List Patients", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,

@@ -132,11 +132,13 @@ docker-compose stop
 ## Documentação
 
 Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs)
-Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Localhost](https://pebmedapi.herickexterkoetter.com.br/api-docs/)
+Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://pebmedapi.herickexterkoetter.com.br/api-docs/)
 
 Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-api/-/blob/develop/ERDiagram.jpg)
 
 ## Estrutura usando DDD (Domain Driven Design)
+
+O DDD é basicamente o conjunto de princípios com foco em domínio. O domínio é o coração do negócio que você está trabalhando, sem o domínio todo o sitema não serviria de nada. Por exemplo um domínio de uma aplicação escolar é o **Estudante**, já que sem o estudante existir não faria sentido existir uma escola.
 
 - **src**: *Contém toda a organização do DDD, e tudo que envolve código dentro da api*
     - **@types**: *Contém todas as tipagens referentes às bibliotecas que não foram atendidas pela própria lib ou pela [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). Também contém as tipagens que alteram as utilizadas pelas bibliotecas do código.*

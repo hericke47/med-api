@@ -3,7 +3,7 @@ import FakeDoctorRepository from "@modules/doctors/repositories/fakes/FakeDoctor
 import { CreateDoctorUseCase } from "@modules/doctors/useCases/CreateDoctor/CreateDoctorUseCase";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
 import FakePatientRepository from "@modules/patients/repositories/fakes/FakePatientRepository";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/FakeHashProvider";
 import AppError from "@shared/errors/AppError";
 
@@ -63,7 +63,7 @@ describe("Update Patient", () => {
     const updatedPatient = await updatePatient.execute({
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "updated-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,
@@ -73,12 +73,51 @@ describe("Update Patient", () => {
     });
 
     const findedUpdatedPatient =
-      await fakePatientRepository.getByDoctorIdAndPatientId(
+      await fakePatientRepository.findByDoctorIdAndPatientId(
         createdDoctor.id,
         createdPatient.id
       );
 
     expect(updatedPatient).toEqual(findedUpdatedPatient);
+  });
+
+  it("should not be able to update a patient if gender does not exists", async () => {
+    const nonExistentGender = NaN;
+
+    const doctor: ICreateDoctorDTO = {
+      name: "Doctor john Doe",
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    };
+
+    const createdDoctor = await createDoctor.execute(doctor);
+
+    const patient: ICreatePatientDTO = {
+      doctorId: createdDoctor.id,
+      birthDate: "09/01/2003",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    const createdPatient = await createPatient.execute(patient);
+
+    await expect(
+      updatePatient.execute({
+        doctorId: createdDoctor.id,
+        patientId: createdPatient.id,
+        birthDate: "2010-10-10",
+        email: "updated-email@gmail.com",
+        genderId: nonExistentGender,
+        height: 180,
+        name: "Updated Name",
+        phone: "4822222222",
+        weight: 88.2,
+      })
+    ).rejects.toEqual(new AppError("Gender not found!"));
   });
 
   it("should not be able to update patient if doctor does not exists", async () => {
@@ -146,7 +185,7 @@ describe("Update Patient", () => {
     const updatePatientWithSameEmail = {
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "already-in-use-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,
@@ -185,7 +224,7 @@ describe("Update Patient", () => {
     const updatePatientWithSameEmail = {
       doctorId: createdDoctor.id,
       patientId: createdPatient.id,
-      birthDate: "10/10/2010",
+      birthDate: "2010-10-10",
       email: "another-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 180,

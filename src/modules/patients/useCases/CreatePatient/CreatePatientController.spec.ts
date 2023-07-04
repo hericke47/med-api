@@ -6,7 +6,7 @@ import createConnection from "@shared/infra/typeorm";
 
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
@@ -36,7 +36,7 @@ describe("Create Patient", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -61,6 +61,34 @@ describe("Create Patient", () => {
     expect(response.body.doctor_id).toEqual(doctorUUID);
   });
 
+  it("should not be able to create a new patient if gender does not exists", async () => {
+    const nonExistentGender = Math.floor(Math.random() * 1000) + 300;
+
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "2003-01-09",
+      email: "patient-example@gmail.com",
+      genderId: nonExistentGender,
+      height: 170,
+      name: "Patient Example",
+      phone: "48999999999",
+      weight: 68.8,
+    };
+
+    const response = await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Gender not found!");
+  });
+
   it("should not be able to create a new patient if doctor does not exists", async () => {
     const createdDoctor = await request(app).post("/doctors").send({
       name: "Another Doctor john Doe",
@@ -78,7 +106,7 @@ describe("Create Patient", () => {
     );
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -106,7 +134,7 @@ describe("Create Patient", () => {
     const sameEmail = "patient-example@gmail.com";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -116,7 +144,7 @@ describe("Create Patient", () => {
     };
 
     const patientWithSameEmail = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 171,
@@ -149,7 +177,7 @@ describe("Create Patient", () => {
     const samePhoneNumber = "48999999999";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -159,7 +187,7 @@ describe("Create Patient", () => {
     };
 
     const patientWithSamePhone = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "another-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 171,

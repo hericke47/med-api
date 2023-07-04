@@ -6,7 +6,7 @@ import createConnection from "@shared/infra/typeorm";
 
 import { hash } from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
@@ -36,7 +36,7 @@ describe("Update Patient", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -46,7 +46,7 @@ describe("Update Patient", () => {
     };
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-patient-example@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -77,6 +77,49 @@ describe("Update Patient", () => {
     expect(response.body.phone).toEqual(updatedPatientResponse.body.phone);
   });
 
+  it("should not be able to update patient if gender does not exists", async () => {
+    const nonExistentGender = Math.floor(Math.random() * 1000) + 300;
+
+    const authentication = await request(app).post("/sessions").send({
+      email: "doctorjhondoe@example.com",
+      password: "example-password",
+    });
+
+    const patient = {
+      birthDate: "2003-01-09",
+      email: "another-to-update-patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "55 98353-0129",
+      weight: 68.8,
+    };
+
+    const updatedPatient = {
+      birthDate: "2003-01-09",
+      email: "another-updated-patient-example@gmail.com",
+      genderId: nonExistentGender,
+      height: 170,
+      name: "Updated Patient Example",
+      phone: "97 7101-5404",
+      weight: 68.8,
+    };
+
+    const createdPatient = await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    const response = await request(app)
+      .put(`/patients/${createdPatient.body.id}`)
+      .send(updatedPatient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Gender not found!");
+  });
+
   it("should not be able to update patient if doctor does not exists", async () => {
     const createdDoctor = await request(app).post("/doctors").send({
       name: "Another Doctor john Doe",
@@ -90,7 +133,7 @@ describe("Update Patient", () => {
     });
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "jhon-doe@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -100,7 +143,7 @@ describe("Update Patient", () => {
     };
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-john-doe@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -141,7 +184,7 @@ describe("Update Patient", () => {
     });
 
     const updatedPatient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "updated-john-doe@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -171,7 +214,7 @@ describe("Update Patient", () => {
     const sameEmail = "patient-example-email@gmail.com";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -181,7 +224,7 @@ describe("Update Patient", () => {
     };
 
     const updatePatientWithSameEmail = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: sameEmail,
       genderId: GendersEnum.MASCULINE,
       height: 170,
@@ -214,7 +257,7 @@ describe("Update Patient", () => {
     const samePhoneNumber = "480099923912";
 
     const patient = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "new-patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -224,7 +267,7 @@ describe("Update Patient", () => {
     };
 
     const updatePatientWithSamePhone = {
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example-another-email@gmail.com",
       genderId: GendersEnum.MASCULINE,
       height: 170,

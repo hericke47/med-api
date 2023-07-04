@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npm run prepare
+
 EXPOSE 3003
 
 CMD [ "npm","run","start:watch" ]

@@ -3,12 +3,15 @@ import { getRepository, Repository } from "typeorm";
 import IPatientRepository from "@modules/patients/repositories/models/IPatientRepository";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
 import { Patient } from "../entities/Patient";
+import { Gender } from "../entities/Gender";
 
 class PatientRepository implements IPatientRepository {
-  private ormRepository: Repository<Patient>;
+  private ormPatientRepository: Repository<Patient>;
+  private ormGenderRepository: Repository<Gender>;
 
   constructor() {
-    this.ormRepository = getRepository(Patient);
+    this.ormPatientRepository = getRepository(Patient);
+    this.ormGenderRepository = getRepository(Gender);
   }
 
   public async create({
@@ -21,7 +24,7 @@ class PatientRepository implements IPatientRepository {
     phone,
     weight,
   }: ICreatePatientDTO): Promise<Patient> {
-    const patient = this.ormRepository.create({
+    const patient = this.ormPatientRepository.create({
       birth_date: birthDate,
       doctor_id: doctorId,
       email,
@@ -32,17 +35,17 @@ class PatientRepository implements IPatientRepository {
       weight,
     });
 
-    return this.ormRepository.save({
+    return this.ormPatientRepository.save({
       ...patient,
       active: true,
     });
   }
 
-  async getByDoctorIdAndPatientId(
+  async findByDoctorIdAndPatientId(
     doctorId: string,
     patientId: string
   ): Promise<Patient | undefined> {
-    const patient = await this.ormRepository.findOne({
+    const patient = await this.ormPatientRepository.findOne({
       where: { id: patientId, doctor_id: doctorId, active: true },
     });
 
@@ -50,29 +53,40 @@ class PatientRepository implements IPatientRepository {
   }
 
   async listPatientsByDoctorId(doctorId: string): Promise<Patient[]> {
-    const patients = await this.ormRepository.find({
-      where: { doctor_id: doctorId, active: true },
-    });
+    const patients = await this.ormPatientRepository
+      .createQueryBuilder("patient")
+      .select([
+        "patient.id",
+        "patient.name",
+        "patient.birth_date",
+        "patient.phone",
+      ])
+      .leftJoinAndSelect("patient.gender", "gender")
+      .where("patient.doctor_id = :doctorId", {
+        doctorId,
+      })
+      .andWhere("patient.active = true")
+      .getMany();
 
     return patients;
   }
 
-  async getByEmailAndDoctorId(
+  async findByEmailAndDoctorId(
     email: string,
     doctorId: string
   ): Promise<Patient | undefined> {
-    const patient = await this.ormRepository.findOne({
+    const patient = await this.ormPatientRepository.findOne({
       where: { email, doctor_id: doctorId, active: true },
     });
 
     return patient;
   }
 
-  async getByPhoneAndDoctorId(
+  async findByPhoneAndDoctorId(
     phone: string,
     doctorId: string
   ): Promise<Patient | undefined> {
-    const patient = await this.ormRepository.findOne({
+    const patient = await this.ormPatientRepository.findOne({
       where: { phone, doctor_id: doctorId, active: true },
     });
 
@@ -80,7 +94,15 @@ class PatientRepository implements IPatientRepository {
   }
 
   public async save(patient: Patient): Promise<Patient> {
-    return this.ormRepository.save(patient);
+    return this.ormPatientRepository.save(patient);
+  }
+
+  async findGenderById(id: number): Promise<Gender | undefined> {
+    const gender = await this.ormGenderRepository.findOne({
+      where: { id },
+    });
+
+    return gender;
   }
 }
 

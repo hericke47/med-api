@@ -1,16 +1,22 @@
+import {
+  createAppointment,
+  listAppointments,
+  updateAndDeleteAppointment,
+} from "./appointments.swagger";
 import { createDoctor } from "./doctors.swagger";
 import {
-  createPatient,
-  getAndUpdatePatient,
-  listPatients,
+  createAndListPatient,
+  getAndUpdateAndDeletePatient,
 } from "./patients.swagger";
 import { authenticateDoctor, refreshDoctorToken } from "./sessions.swagger";
 
 export default {
+  "/doctors": createDoctor,
   "/sessions": authenticateDoctor,
   "/sessions/refreshToken": refreshDoctorToken,
-  "/doctors": createDoctor,
-  "/patients": createPatient,
-  "/patients/{patientId}": getAndUpdatePatient,
-  "/patients/": listPatients,
+  "/patients": createAndListPatient,
+  "/patients/{patientId}": getAndUpdateAndDeletePatient,
+  "/appointments": createAppointment,
+  "/appointments/{appointmentId}": updateAndDeleteAppointment,
+  "/appointments/patient/{patientId}": listAppointments,
 };

@@ -1,7 +1,8 @@
 export const createDoctor = {
   post: {
-    description: "Create a doctor.",
-    tags: ["Doctors"],
+    description: "Cria um médico",
+    summary: "Criação de um médico",
+    tags: ["Médicos"],
     requestBody: {
       content: {
         "application/json": {

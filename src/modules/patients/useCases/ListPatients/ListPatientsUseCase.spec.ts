@@ -3,7 +3,7 @@ import FakeDoctorRepository from "@modules/doctors/repositories/fakes/FakeDoctor
 import { CreateDoctorUseCase } from "@modules/doctors/useCases/CreateDoctor/CreateDoctorUseCase";
 import ICreatePatientDTO from "@modules/patients/dtos/ICreatePatientDTO";
 import FakePatientRepository from "@modules/patients/repositories/fakes/FakePatientRepository";
-import { GendersEnum } from "@modules/patients/types/Genders";
+import { GendersEnum } from "@modules/patients/types/Gender";
 import FakeHashProvider from "@shared/container/providers/HashProvider/fakes/FakeHashProvider";
 import AppError from "@shared/errors/AppError";
 
@@ -58,7 +58,7 @@ describe("List Patients", () => {
 
     const firstPatientDoctor1: ICreatePatientDTO = {
       doctorId: createdDoctor1.id,
-      birthDate: "09/01/2003",
+      birthDate: "2003-01-09",
       email: "patient-example@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -69,7 +69,7 @@ describe("List Patients", () => {
 
     const secondPatientDoctor1: ICreatePatientDTO = {
       doctorId: createdDoctor1.id,
-      birthDate: "12/02/1990",
+      birthDate: "1990-02-12",
       email: "patient-example2@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
@@ -80,7 +80,7 @@ describe("List Patients", () => {
 
     const thirdPatientDoctor2: ICreatePatientDTO = {
       doctorId: createdDoctor2.id,
-      birthDate: "12/02/1990",
+      birthDate: "1990-02-12",
       email: "patient-example2@gmail.com",
       genderId: GendersEnum.FEMININE,
       height: 170,
