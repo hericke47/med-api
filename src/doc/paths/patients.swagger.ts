@@ -1,8 +1,9 @@
 export const createAndListPatient = {
   post: {
     description:
-      "Create a patient. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
-    tags: ["Patients"],
+      "Cria um novo paciente para um médico específico. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
+    summary: "Criação de um paciente",
+    tags: ["Pacientes"],
     security: [
       {
         bearerAuth: [],
@@ -111,8 +112,9 @@ export const createAndListPatient = {
     },
   },
   get: {
-    description: "List patients by doctor.",
-    tags: ["Patients"],
+    description: "Lista todos os pacientes",
+    summary: "Listagem de pacientes",
+    tags: ["Pacientes"],
     security: [
       {
         bearerAuth: [],
@@ -190,8 +192,9 @@ export const createAndListPatient = {
 
 export const getAndUpdateAndDeletePatient = {
   get: {
-    description: "Get patient by doctor.",
-    tags: ["Patients"],
+    description: "Lista os pacientes de um médico",
+    summary: "Listagem de pacientes de um médico",
+    tags: ["Pacientes"],
     parameters: [
       {
         schema: {
@@ -264,8 +267,9 @@ export const getAndUpdateAndDeletePatient = {
   },
   put: {
     description:
-      "Update a patient. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
-    tags: ["Patients"],
+      "Atualiza um paciente de um doutor específico. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
+    summary: "Atualização de um paciente",
+    tags: ["Pacientes"],
     parameters: [
       {
         schema: {
@@ -387,8 +391,9 @@ export const getAndUpdateAndDeletePatient = {
     },
   },
   delete: {
-    description: "Delete patient",
-    tags: ["Patients"],
+    description: "Marca um paciente como desativado",
+    summary: "Deleção de um paciente",
+    tags: ["Pacientes"],
     parameters: [
       {
         schema: {

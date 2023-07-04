@@ -126,6 +126,19 @@ class FakeAppointmentRepository implements IAppointmentRepository {
       return appointment;
     });
   }
+
+  async findByDoctorIdAndPatientId(
+    doctorId: string,
+    patientId: string
+  ): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(
+      (appointment) =>
+        appointment.doctor_id === doctorId &&
+        appointment.patient_id === patientId
+    );
+
+    return appointments;
+  }
 }
 
 export default FakeAppointmentRepository;

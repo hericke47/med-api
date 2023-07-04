@@ -138,6 +138,8 @@ Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-ap
 
 ## Estrutura usando DDD (Domain Driven Design)
 
+O DDD é basicamente o conjunto de princípios com foco em domínio. O domínio é o coração do negócio que você está trabalhando, sem o domínio todo o sitema não serviria de nada. Por exemplo um domínio de uma aplicação escolar é o **Estudante**, já que sem o estudante existir não faria sentido existir uma escola.
+
 - **src**: *Contém toda a organização do DDD, e tudo que envolve código dentro da api*
     - **@types**: *Contém todas as tipagens referentes às bibliotecas que não foram atendidas pela própria lib ou pela [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). Também contém as tipagens que alteram as utilizadas pelas bibliotecas do código.*
     - **config**: *Contém os arquivos referentes a configuração, normalmente de libs (ex.: secret e data de validade do jwt), do código.*

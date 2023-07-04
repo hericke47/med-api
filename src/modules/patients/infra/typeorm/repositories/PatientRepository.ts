@@ -53,9 +53,20 @@ class PatientRepository implements IPatientRepository {
   }
 
   async listPatientsByDoctorId(doctorId: string): Promise<Patient[]> {
-    const patients = await this.ormPatientRepository.find({
-      where: { doctor_id: doctorId, active: true },
-    });
+    const patients = await this.ormPatientRepository
+      .createQueryBuilder("patient")
+      .select([
+        "patient.id",
+        "patient.name",
+        "patient.birth_date",
+        "patient.phone",
+      ])
+      .leftJoinAndSelect("patient.gender", "gender")
+      .where("patient.doctor_id = :doctorId", {
+        doctorId,
+      })
+      .andWhere("patient.active = true")
+      .getMany();
 
     return patients;
   }

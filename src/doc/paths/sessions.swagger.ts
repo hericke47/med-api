@@ -1,7 +1,8 @@
 export const authenticateDoctor = {
   post: {
-    description: "Authenticate.",
-    tags: ["Sessions"],
+    description: "Autentica um médigo na api",
+    summary: "Autenticação de um médico na api",
+    tags: ["Autenticação"],
     requestBody: {
       content: {
         "application/json": {
@@ -53,8 +54,9 @@ export const authenticateDoctor = {
 
 export const refreshDoctorToken = {
   post: {
-    description: "Generate a new token.",
-    tags: ["Sessions"],
+    description: "Gera um novo token para acesso",
+    summary: "Gera um novo token de acesso na api",
+    tags: ["Autenticação"],
     requestBody: {
       content: {
         "application/json": {

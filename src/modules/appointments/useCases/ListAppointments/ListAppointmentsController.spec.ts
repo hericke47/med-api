@@ -10,7 +10,8 @@ import { GendersEnum } from "@modules/patients/types/Gender";
 
 let connection: Connection;
 let doctorUUID: string;
-describe("List Patients", () => {
+let appointmentDate: Date;
+describe("Create Appointment", () => {
   beforeAll(async () => {
     connection = await createConnection();
     await connection.runMigrations();
@@ -22,6 +23,14 @@ describe("List Patients", () => {
       `INSERT INTO doctors(id, name, email, password, created_at, updated_at, active)
         values('${doctorUUID}', 'Doctor john Doe', 'doctorjhondoe@example.com', '${password}', 'now()', 'now()', true)`
     );
+
+    const currentDate = new Date();
+
+    appointmentDate = new Date(
+      `${
+        currentDate.getFullYear() + 1
+      }-${currentDate.getMonth()}-${currentDate.getDate()} 14:30:00`
+    );
   });
 
   afterAll(async () => {
@@ -29,7 +38,7 @@ describe("List Patients", () => {
     await connection.close();
   });
 
-  it("should be able to list patients by doctor", async () => {
+  it("should be able to list appointments", async () => {
     const authentication = await request(app).post("/sessions").send({
       email: "doctorjhondoe@example.com",
       password: "example-password",
@@ -41,36 +50,42 @@ describe("List Patients", () => {
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
+      phone: "(53) 3477-7182",
       weight: 68.8,
     };
 
-    await request(app)
+    const createdPatient = await request(app)
       .post("/patients")
       .send(patient)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
+    const createdAppointment = await request(app)
+      .post(`/appointments`)
+      .send({
+        date: appointmentDate,
+        patientId: createdPatient.body.id,
+      })
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
     const response = await request(app)
-      .get("/patients")
+      .get(`/appointments/patient/${createdPatient.body.id}`)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(1);
     expect(response.body[0]).toHaveProperty("id");
-    expect(response.body[0].name).toEqual(patient.name);
-    expect(response.body[0].phone).toEqual(patient.phone);
+    expect(response.body[0].date).toStrictEqual(createdAppointment.body.date);
   });
 
-  it("should not be able to list patients if doctor does not exists", async () => {
+  it("should not be able to list appointments if doctor does not exists", async () => {
     const createdDoctor = await request(app).post("/doctors").send({
-      name: "Doctor john Doe",
-      email: "doctorjhondoe2@example.com",
-      password: "example-password2",
+      name: "Another Doctor john Doe",
+      email: "anotherdoctorjhondoe@example.com",
+      password: "another-example-password",
     });
 
     const authentication = await request(app).post("/sessions").send({
       email: createdDoctor.body.email,
-      password: "example-password2",
+      password: "another-example-password",
     });
 
     const patient = {
@@ -79,11 +94,11 @@ describe("List Patients", () => {
       genderId: GendersEnum.FEMININE,
       height: 170,
       name: "Patient Example",
-      phone: "48999999999",
-      weight: "68.8",
+      phone: "(53) 3477-7182",
+      weight: 68.8,
     };
 
-    await request(app)
+    const createdPatient = await request(app)
       .post("/patients")
       .send(patient)
       .set("Authorization", `bearer ${authentication.body.token}`);
@@ -93,7 +108,7 @@ describe("List Patients", () => {
     );
 
     const response = await request(app)
-      .get(`/patients/`)
+      .get(`/appointments/patient/${createdPatient.body.id}`)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);
