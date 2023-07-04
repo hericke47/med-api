@@ -5,6 +5,7 @@ import { Joi, Segments, celebrate } from "celebrate";
 import { UpdateAppointmentController } from "@modules/appointments/useCases/UpdateAppointment/UpdateAppointmentController";
 import { DeleteAppointmentController } from "@modules/appointments/useCases/DeleteAppointment/DeleteAppointmentController";
 import { UpdateAppointmentNotesController } from "@modules/appointments/useCases/UpdateAppointmentNotes/UpdateAppointmentNotesController";
+import { ListAppointmentsController } from "@modules/appointments/useCases/ListAppointments/ListAppointmentsController";
 import { ensureDoctorAuthenticated } from "../middlewares/ensureDoctorAuthenticated";
 
 const appointmentsRouter = Router();
@@ -13,6 +14,7 @@ const createAppointmentController = new CreateAppointmentController();
 const updateAppointmentController = new UpdateAppointmentController();
 const deleteAppointmentController = new DeleteAppointmentController();
 const updateAppointmentNotesController = new UpdateAppointmentNotesController();
+const listAppointmentsController = new ListAppointmentsController();
 
 appointmentsRouter.post(
   "/",
@@ -67,4 +69,9 @@ appointmentsRouter.patch(
   updateAppointmentNotesController.handle
 );
 
+appointmentsRouter.get(
+  "/",
+  ensureDoctorAuthenticated,
+  listAppointmentsController.handle
+);
 export default appointmentsRouter;

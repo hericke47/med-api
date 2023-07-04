@@ -121,6 +121,17 @@ class AppointmentRepository implements IAppointmentRepository {
       { appointment_status_id: AppointmentStatusEnum.CANCELED }
     );
   }
+
+  async findByDoctorId(doctorId: string): Promise<Appointment[]> {
+    const appointments = await this.ormAppointmentRepository.find({
+      select: ["id", "date", "notes"],
+      where: {
+        doctor_id: doctorId,
+      },
+    });
+
+    return appointments;
+  }
 }
 
 export default AppointmentRepository;
