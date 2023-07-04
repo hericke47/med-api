@@ -65,7 +65,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 ```bash
   # Clonar o repositório
-  ❯ https://gitlab.com/hericke47/pebmed-api.git
+  ❯ https://github.com/hericke47/pebmed-api.git
 
   # Entrar no diretório
   ❯ cd pebmed-api
