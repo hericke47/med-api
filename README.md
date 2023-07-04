@@ -16,7 +16,9 @@
 
 ## Sobre o Projeto
 
-Este projeto de Back-end foi desenvolvido em Node.js com TypeScript no formato RESTFull utilizando a metodologia [DDD (Domain Driven Design)](https://en.wikipedia.org/wiki/Domain-driven_design).
+Projeto criado com o objetivo de possibilitar acompanhar agendamentos de consultas de um médico.
+
+Back-end foi desenvolvido em Node.js com TypeScript no formato RESTFull utilizando a metodologia [DDD (Domain Driven Design)](https://en.wikipedia.org/wiki/Domain-driven_design).
 
 ---
 
@@ -137,11 +139,11 @@ docker-compose down
 
 ## Documentação
 
-Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs)
+Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs.)
 
-Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://pebmedapi.herickexterkoetter.com.br/api-docs/)
+Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://pebmedapi.herickexterkoetter.com.br/api-docs/).
 
-Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-api/-/blob/develop/ERDiagram.jpg)
+Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-api/-/blob/develop/ERDiagram.jpg).
 
 Sendo também possivel instalar o [Insomnia](https://insomnia.rest/download),e importar o arquivo: [Insomnia.json](https://github.com/hericke47/pebmed-api/blob/develop/insomnia_pebmed_api.json).
 
