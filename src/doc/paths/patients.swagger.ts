@@ -387,8 +387,7 @@ export const getAndUpdateAndDeletePatient = {
     },
   },
   delete: {
-    description:
-      "Delete a patient. Obs: GenderId 1 = Feminine, GenderId 2 = Masculine",
+    description: "Delete patient",
     tags: ["Patients"],
     parameters: [
       {
