@@ -10,9 +10,9 @@ import {
 import { authenticateDoctor, refreshDoctorToken } from "./sessions.swagger";
 
 export default {
+  "/doctors": createDoctor,
   "/sessions": authenticateDoctor,
   "/sessions/refreshToken": refreshDoctorToken,
-  "/doctors": createDoctor,
   "/patients": createAndListPatient,
   "/patients/{patientId}": getAndUpdateAndDeletePatient,
   "/appointments": createAppointment,
