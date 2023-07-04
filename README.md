@@ -139,7 +139,7 @@ docker-compose down
 
 ## Documentação
 
-Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs.)
+Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs.).
 
 Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://pebmedapi.herickexterkoetter.com.br/api-docs/).
 
