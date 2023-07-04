@@ -136,6 +136,8 @@ Para usar e testar os endpoints da API em ambiente de produção, acesse: [Docum
 
 Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-api/-/blob/develop/ERDiagram.jpg)
 
+Sendo também possivel instalar o [Insomnia](https://insomnia.rest/download),e importar o arquivo: [Insomnia.json](https://github.com/hericke47/pebmed-api/blob/develop/insomnia_pebmed_api.json).
+
 ## Estrutura usando DDD (Domain Driven Design)
 
 O DDD é basicamente o conjunto de princípios com foco em domínio. O domínio é o coração do negócio que você está trabalhando, sem o domínio todo o sitema não serviria de nada. Por exemplo um domínio de uma aplicação escolar é o **Estudante**, já que sem o estudante existir não faria sentido existir uma escola.
