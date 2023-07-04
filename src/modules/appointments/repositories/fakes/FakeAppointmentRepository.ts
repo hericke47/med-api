@@ -6,7 +6,7 @@ import { AppointmentStatus } from "@modules/appointments/infra/typeorm/entities/
 import IAppointmentRepository from "../models/IAppointmentRepository";
 
 class FakeAppointmentRepository implements IAppointmentRepository {
-  private appointments: Appointment[] = [];
+  appointments: Appointment[] = [];
   private appointmentStatus: AppointmentStatus[] = [
     {
       id: AppointmentStatusEnum.PENDING,
@@ -113,6 +113,18 @@ class FakeAppointmentRepository implements IAppointmentRepository {
     );
 
     return findAppointmentStatus;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    this.appointments.map((appointment) => {
+      if (appointment.id === id) {
+        appointment.appointment_status_id = AppointmentStatusEnum.CANCELED;
+
+        return appointment;
+      }
+
+      return appointment;
+    });
   }
 }
 

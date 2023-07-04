@@ -68,7 +68,7 @@ class UpdateAppointmentUseCase {
     );
 
     if (!appointment) {
-      throw new AppError("Appointment does not exists!");
+      throw new AppError("Appointment not found!");
     }
 
     if (this.dateProvider.compareIfBefore(new Date(date), new Date())) {

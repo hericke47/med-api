@@ -1,7 +1,6 @@
 export const createAppointment = {
   post: {
-    description:
-      "Create a Appointment. Obs: AppointmentStatus 1 = PENDING, AppointmentStatus 2 = CONCLUDED, AppointmentStatus 3 = CANCELED",
+    description: "Create Appointment",
     tags: ["Appointments"],
     security: [
       {
@@ -93,10 +92,10 @@ export const createAppointment = {
   },
 };
 
-export const updateAppointment = {
+export const updateAndDeleteAppointment = {
   put: {
     description:
-      "Update a Appointment. Obs: AppointmentStatus 1 = PENDING, AppointmentStatus 2 = CONCLUDED, AppointmentStatus 3 = CANCELED",
+      "Update Appointment. Obs: AppointmentStatus 1 = PENDING, AppointmentStatus 2 = CONCLUDED, AppointmentStatus 3 = CANCELED",
     tags: ["Appointments"],
     parameters: [
       {
@@ -179,6 +178,62 @@ export const updateAppointment = {
               {
                 message:
                   "There is already an appointment in the range of this appointment",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+  delete: {
+    description: "Delete Appointment",
+    tags: ["Appointments"],
+    parameters: [
+      {
+        schema: {
+          type: "string",
+        },
+        in: "path",
+        name: "appointmentId",
+        required: true,
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    responses: {
+      "200": {
+        content: {},
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                message: "Doctor not found!",
+              },
+              {
+                message: "Appointment not found!",
               },
             ],
           },
