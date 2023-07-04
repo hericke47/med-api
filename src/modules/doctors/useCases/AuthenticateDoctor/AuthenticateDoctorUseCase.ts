@@ -40,14 +40,6 @@ class AuthenticateDoctorUseCase {
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const doctor = await this.doctorRepository.findByEmail(email);
 
-    const {
-      expiresInToken,
-      secretRefreshToken,
-      secretToken,
-      expiresInRefreshToken,
-      expiresRefreshTokenDays,
-    } = auth;
-
     if (!doctor) {
       throw new AppError("Email or password incorrect!");
     }
@@ -60,6 +52,14 @@ class AuthenticateDoctorUseCase {
     if (!passwordMatch) {
       throw new AppError("Email or password incorrect!");
     }
+
+    const {
+      expiresInToken,
+      secretRefreshToken,
+      secretToken,
+      expiresInRefreshToken,
+      expiresRefreshTokenDays,
+    } = auth;
 
     const token = sign({}, secretToken, {
       subject: doctor.id,
