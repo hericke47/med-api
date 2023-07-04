@@ -8,7 +8,7 @@ import AppError from "@shared/errors/AppError";
 import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
 import FakeAppointmentRepository from "@modules/appointments/repositories/fakes/FakeAppointmentRepository";
 import { CreateAppointmentUseCase } from "../CreateAppointment/CreateAppointmentUseCase";
-import { DeleteAppointmentUseCase } from "./DeleteAppointmentUseCase";
+import { UpdateAppointmentNotesUseCase } from "./UpdateAppointmentNotesUseCase";
 
 let fakeDoctorRepository: FakeDoctorRepository;
 let fakePatientRepository: FakePatientRepository;
@@ -17,15 +17,14 @@ let fakeAppointmentRepository: FakeAppointmentRepository;
 let createPatient: CreatePatientUseCase;
 let createDoctor: CreateDoctorUseCase;
 let createAppointment: CreateAppointmentUseCase;
-let deleteAppointment: DeleteAppointmentUseCase;
+let updateAppointmentNotes: UpdateAppointmentNotesUseCase;
 let dateProvider: DayjsDateProvider;
 
 let doctorId: string;
 let patientId: string;
 let appointmentDate: Date;
-let secondAppointmentDate: Date;
 
-describe("Delete Appointment", () => {
+describe("Update Appointment Notes", () => {
   beforeEach(async () => {
     fakeDoctorRepository = new FakeDoctorRepository();
     fakePatientRepository = new FakePatientRepository();
@@ -50,7 +49,7 @@ describe("Delete Appointment", () => {
       dateProvider
     );
 
-    deleteAppointment = new DeleteAppointmentUseCase(
+    updateAppointmentNotes = new UpdateAppointmentNotesUseCase(
       fakeDoctorRepository,
       fakeAppointmentRepository
     );
@@ -83,41 +82,30 @@ describe("Delete Appointment", () => {
         currentDate.getFullYear() + 1
       }-${currentDate.getMonth()}-${currentDate.getDate()} 14:30:00`
     );
-
-    secondAppointmentDate = new Date(
-      `${
-        currentDate.getFullYear() + 2
-      }-${currentDate.getMonth()}-${currentDate.getDate()} 14:30:00`
-    );
   });
 
-  it("should be able to delete appointment", async () => {
+  it("should be able to update appointment notes", async () => {
+    const note = "example note";
+
     const createdAppointment = await createAppointment.execute({
       date: appointmentDate,
       doctorId,
       patientId,
     });
 
-    await createAppointment.execute({
-      date: secondAppointmentDate,
+    const updatedAppointment = await updateAppointmentNotes.execute({
       doctorId,
-      patientId,
-    });
-
-    await deleteAppointment.execute({
       appointmentId: createdAppointment.id,
-      doctorId,
+      notes: note,
     });
 
-    const appointment = await fakeAppointmentRepository.findByIdAndDoctorId(
-      patientId,
-      doctorId
-    );
-
-    expect(appointment).toBeUndefined();
+    expect(updatedAppointment).toHaveProperty("id");
+    expect(updatedAppointment.notes).toEqual(note);
   });
 
-  it("should not be able to delete appointment if doctor does not exists", async () => {
+  it("should not be able to update appointment notes if doctor does not exists", async () => {
+    const note = "example note";
+
     const createdAppointment = await createAppointment.execute({
       date: appointmentDate,
       doctorId,
@@ -125,18 +113,22 @@ describe("Delete Appointment", () => {
     });
 
     await expect(
-      deleteAppointment.execute({
-        appointmentId: createdAppointment.id,
+      updateAppointmentNotes.execute({
         doctorId: "non-existent-doctor-id",
+        appointmentId: createdAppointment.id,
+        notes: note,
       })
     ).rejects.toEqual(new AppError("Doctor not found!"));
   });
 
-  it("should not be able to delete appointment if appointment does not exists", async () => {
+  it("should not be able to update appointment notes if appointment does not exists", async () => {
+    const note = "example note";
+
     await expect(
-      deleteAppointment.execute({
-        appointmentId: "non-existent-appointment-id",
+      updateAppointmentNotes.execute({
         doctorId,
+        appointmentId: "non-existent-appointment-id",
+        notes: note,
       })
     ).rejects.toEqual(new AppError("Appointment not found!"));
   });

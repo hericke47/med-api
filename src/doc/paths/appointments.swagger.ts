@@ -146,9 +146,14 @@ export const updateAndDeleteAppointment = {
         content: {
           "application/json": {
             example: {
-              date: "2025-07-22 09:33:00",
-              patientId: "patient-uuid",
-              appointmentStatusId: 1,
+              id: "uuid",
+              date: "2025-07-22T09:33:00.000Z",
+              notes: null,
+              patient_id: "patient-uuid",
+              doctor_id: "doctor-uuid",
+              appointment_status_id: 1,
+              created_at: "2023-07-03T23:03:20.308Z",
+              updated_at: "2023-07-03T23:03:40.470Z",
             },
           },
         },
@@ -167,7 +172,7 @@ export const updateAndDeleteAppointment = {
                 message: "Patient not found!",
               },
               {
-                message: "Appointment does not exists!",
+                message: "Appointment not found!",
               },
               {
                 message: "You can't create an appointment on a past date.",
@@ -234,6 +239,92 @@ export const updateAndDeleteAppointment = {
               },
               {
                 message: "Appointment not found!",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+  patch: {
+    description: "Update Appointment Notes.",
+    tags: ["Appointments"],
+    parameters: [
+      {
+        schema: {
+          type: "string",
+        },
+        in: "path",
+        name: "appointmentId",
+        required: true,
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    requestBody: {
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              notes: {
+                type: "string",
+              },
+            },
+          },
+          example: {
+            notes: "Example note",
+          },
+        },
+      },
+    },
+    responses: {
+      "200": {
+        content: {
+          "application/json": {
+            example: {
+              id: "uuid",
+              date: "2025-07-22T09:33:00.000Z",
+              notes: null,
+              patient_id: "patient-uuid",
+              doctor_id: "doctor-uuid",
+              appointment_status_id: 1,
+              created_at: "2023-07-03T23:03:20.308Z",
+              updated_at: "2023-07-03T23:03:40.470Z",
+            },
+          },
+        },
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                message: "Appointment not found!",
+              },
+              {
+                message: "Doctor not found!",
               },
             ],
           },
