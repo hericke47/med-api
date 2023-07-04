@@ -86,7 +86,7 @@ cp ormconfig.example.js ormconfig.js
 **Executar Docker-compose para subir o container com a api e o container com o banco de dados postgres**
 
 ```bash
-docker-compose up --build -d
+docker-compose up -d
 ```
 
 **Executar as Migrations para criação do banco de dados**
@@ -140,7 +140,7 @@ Sendo também possivel instalar o [Insomnia](https://insomnia.rest/download),e i
 
 ## Estrutura usando DDD (Domain Driven Design)
 
-O DDD é basicamente o conjunto de princípios com foco em domínio. O domínio é o coração do negócio que você está trabalhando, sem o domínio todo o sitema não serviria de nada. Por exemplo um domínio de uma aplicação escolar é o **Estudante**, já que sem o estudante existir não faria sentido existir uma escola.
+De maneira simplificada o Domain-Driven Design é uma maneira de construir software que se concentra na compreensão profunda do negócio. Em vez de apenas escrever código, o DDD ajuda a criar uma representação clara das regras e conceitos importantes do negócio. Isso facilita a criação de sistemas flexíveis e fáceis de entender, que se adaptam às necessidades da empresa. Em resumo, o DDD é uma abordagem para desenvolver software que se concentra em entender e resolver os problemas do negócio de forma eficiente.
 
 - **src**: *Contém toda a organização do DDD, e tudo que envolve código dentro da api*
     - **@types**: *Contém todas as tipagens referentes às bibliotecas que não foram atendidas pela própria lib ou pela [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped). Também contém as tipagens que alteram as utilizadas pelas bibliotecas do código.*
