@@ -1,7 +1,8 @@
 export const createAppointment = {
   post: {
-    description: "Create Appointment",
-    tags: ["Appointments"],
+    description: "Cria um agendamento",
+    summary: "Criação de agendamento",
+    tags: ["Agendamentos"],
     security: [
       {
         bearerAuth: [],
@@ -95,8 +96,9 @@ export const createAppointment = {
 export const updateAndDeleteAppointment = {
   put: {
     description:
-      "Update Appointment. Obs: AppointmentStatus 1 = PENDING, AppointmentStatus 2 = CONCLUDED, AppointmentStatus 3 = CANCELED",
-    tags: ["Appointments"],
+      "Atualiza um agendamento. Obs: AppointmentStatus 1 = PENDING, AppointmentStatus 2 = CONCLUDED, AppointmentStatus 3 = CANCELED",
+    summary: "Atualização de um agendamento",
+    tags: ["Agendamentos"],
     parameters: [
       {
         schema: {
@@ -209,8 +211,9 @@ export const updateAndDeleteAppointment = {
     },
   },
   delete: {
-    description: "Delete Appointment",
-    tags: ["Appointments"],
+    description: "Marca o agendamento como 'Canceled'",
+    summary: "Deleção de um agendamento",
+    tags: ["Agendamentos"],
     parameters: [
       {
         schema: {
@@ -265,8 +268,9 @@ export const updateAndDeleteAppointment = {
     },
   },
   patch: {
-    description: "Update Appointment Notes.",
-    tags: ["Appointments"],
+    description: "Atualiza anotações do agendamento",
+    summary: "Atualização de anotações do agendamento",
+    tags: ["Agendamentos"],
     parameters: [
       {
         schema: {
@@ -323,6 +327,79 @@ export const updateAndDeleteAppointment = {
               {
                 message: "Appointment not found!",
               },
+              {
+                message: "Doctor not found!",
+              },
+            ],
+          },
+        },
+      },
+      "401": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                error: true,
+                code: "token.expired",
+                message: "Token invalid.",
+              },
+              {
+                error: true,
+                code: "token.invalid",
+                message: "Token not present.",
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
+};
+
+export const listAppointments = {
+  get: {
+    description: "Lista os agendamentos de um paciente",
+    summary: "Listagem de agendamentos",
+    tags: ["Agendamentos"],
+    parameters: [
+      {
+        schema: {
+          type: "string",
+        },
+        in: "path",
+        name: "patientId",
+        required: true,
+      },
+    ],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    responses: {
+      "200": {
+        content: {
+          "application/json": {
+            example: [
+              {
+                id: "uuid",
+                date: "2023-07-22T09:33:00.000Z",
+                notes: null,
+                appointmentStatus: {
+                  id: 1,
+                  name: "Pending",
+                  created_at: "2023-07-04T02:04:44.512Z",
+                  updated_at: "2023-07-04T02:04:44.512Z",
+                },
+              },
+            ],
+          },
+        },
+      },
+      "400": {
+        content: {
+          "application/json": {
+            example: [
               {
                 message: "Doctor not found!",
               },

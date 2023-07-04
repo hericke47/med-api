@@ -22,5 +22,8 @@ export default interface IAppointmentRepository {
   ): Promise<Appointment | undefined>;
   findAppointmentStatusById(id: number): Promise<AppointmentStatus | undefined>;
   deleteById(id: string): Promise<void>;
-  findByDoctorId(doctorId: string): Promise<Appointment[]>;
+  findByDoctorIdAndPatientId(
+    doctorId: string,
+    patientId: string
+  ): Promise<Appointment[]>;
 }

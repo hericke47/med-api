@@ -93,6 +93,7 @@ describe("List Appointments", () => {
 
     const listedAppointments = await listAppointments.execute({
       doctorId,
+      patientId,
     });
 
     expect(listedAppointments).toStrictEqual([createdAppointment]);
@@ -102,6 +103,7 @@ describe("List Appointments", () => {
     await expect(
       listAppointments.execute({
         doctorId: "non-existent-doctor-id",
+        patientId,
       })
     ).rejects.toEqual(new AppError("Doctor not found!"));
   });

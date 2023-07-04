@@ -6,6 +6,7 @@ import { inject, injectable } from "tsyringe";
 
 interface IRequest {
   doctorId: string;
+  patientId: string;
 }
 
 @injectable()
@@ -18,16 +19,18 @@ class ListAppointmentsUseCase {
     private appointmentRepository: IAppointmentRepository
   ) {}
 
-  async execute({ doctorId }: IRequest): Promise<Appointment[]> {
+  async execute({ doctorId, patientId }: IRequest): Promise<Appointment[]> {
     const doctor = await this.doctorRepository.findById(doctorId);
 
     if (!doctor) {
       throw new AppError("Doctor not found!");
     }
 
-    const appointments = await this.appointmentRepository.findByDoctorId(
-      doctorId
-    );
+    const appointments =
+      await this.appointmentRepository.findByDoctorIdAndPatientId(
+        doctorId,
+        patientId
+      );
 
     return appointments;
   }

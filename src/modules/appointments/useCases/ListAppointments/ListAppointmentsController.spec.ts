@@ -68,7 +68,7 @@ describe("Create Appointment", () => {
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     const response = await request(app)
-      .get(`/appointments`)
+      .get(`/appointments/patient/${createdPatient.body.id}`)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(200);
@@ -88,12 +88,27 @@ describe("Create Appointment", () => {
       password: "another-example-password",
     });
 
+    const patient = {
+      birthDate: "2003-01-09",
+      email: "patient-example@gmail.com",
+      genderId: GendersEnum.FEMININE,
+      height: 170,
+      name: "Patient Example",
+      phone: "(53) 3477-7182",
+      weight: 68.8,
+    };
+
+    const createdPatient = await request(app)
+      .post("/patients")
+      .send(patient)
+      .set("Authorization", `bearer ${authentication.body.token}`);
+
     await connection.query(
       `delete from doctors where id = '${createdDoctor.body.id}'`
     );
 
     const response = await request(app)
-      .get(`/appointments`)
+      .get(`/appointments/patient/${createdPatient.body.id}`)
       .set("Authorization", `bearer ${authentication.body.token}`);
 
     expect(response.status).toBe(400);

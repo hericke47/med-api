@@ -70,7 +70,12 @@ appointmentsRouter.patch(
 );
 
 appointmentsRouter.get(
-  "/",
+  "/patient/:patientId",
+  celebrate({
+    [Segments.PARAMS]: {
+      patientId: Joi.string().uuid().required(),
+    },
+  }),
   ensureDoctorAuthenticated,
   listAppointmentsController.handle
 );

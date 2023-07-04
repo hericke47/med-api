@@ -6,7 +6,8 @@ export const swaggerConfig: SwaggerOptions = {
   info: {
     version: "0.1.0",
     title: "PEBMED",
-    description: "Documentação Api PEBMED",
+    description:
+      "Documentação Api PEBMED, com o objetivo de possibilitar o acompanhamento de agendamentos de consulta de um médico. <br><br> Feita com os padrões REST",
   },
   components: {
     securitySchemes: {

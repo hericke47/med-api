@@ -122,13 +122,21 @@ class AppointmentRepository implements IAppointmentRepository {
     );
   }
 
-  async findByDoctorId(doctorId: string): Promise<Appointment[]> {
-    const appointments = await this.ormAppointmentRepository.find({
-      select: ["id", "date", "notes"],
-      where: {
-        doctor_id: doctorId,
-      },
-    });
+  async findByDoctorIdAndPatientId(
+    doctorId: string,
+    patientId: string
+  ): Promise<Appointment[]> {
+    const appointments = await this.ormAppointmentRepository
+      .createQueryBuilder("appointment")
+      .select(["appointment.id", "appointment.date", "appointment.notes"])
+      .leftJoinAndSelect("appointment.appointmentStatus", "appointmentStatus")
+      .where("appointment.doctor_id = :doctorId", {
+        doctorId,
+      })
+      .andWhere("appointment.patient_id = :patientId", {
+        patientId,
+      })
+      .getMany();
 
     return appointments;
   }
