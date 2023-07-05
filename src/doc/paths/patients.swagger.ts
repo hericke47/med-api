@@ -192,8 +192,8 @@ export const createAndListPatient = {
 
 export const getAndUpdateAndDeletePatient = {
   get: {
-    description: "Lista os pacientes de um médico",
-    summary: "Listagem de pacientes de um médico",
+    description: "Busca um paciente específico de um médico",
+    summary: "Busca um paciente específico",
     tags: ["Pacientes"],
     parameters: [
       {
