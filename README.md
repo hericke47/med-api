@@ -1,5 +1,5 @@
 <h1 align="center">
- 🏥️ Back-end 💊 PebMed 🩺
+ 🏥️ Back-end 💊 med 🩺
 </h1>
 
 ---
@@ -67,10 +67,10 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 ```bash
   # Clonar o repositório
-  ❯ https://github.com/hericke47/pebmed-api.git
+  ❯ https://github.com/hericke47/med-api.git
 
   # Entrar no diretório
-  ❯ cd pebmed-api
+  ❯ cd med-api
 ```
 
 **Copiar arquivo com as variáveis de ambiente**
@@ -94,7 +94,7 @@ docker-compose up -d
 **Executar as Migrations para criação do banco de dados**
 
 ```bash
-docker exec pebmed-api npm run typeorm:migration:run
+docker exec med-api npm run typeorm:migration:run
 ```
 
 ou
@@ -108,7 +108,7 @@ npm run typeorm:migration:run
 Com a API funcionando, execute o comando abaixo para rodar os testes unitários e testes de integração
 
 ```bash
-docker exec pebmed-api npm run test
+docker exec med-api npm run test
 ```
 
 ou
@@ -141,11 +141,11 @@ docker-compose down
 
 Para usar e testar os endpoints da API localmente, acesse: [Documentação Localhost](http://localhost:3003/api-docs.).
 
-Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://pebmedapi.herickexterkoetter.com.br/api-docs/).
+Para usar e testar os endpoints da API em ambiente de produção, acesse: [Documentação Em Produção](https://medapi.herickexterkoetter.com.br/api-docs/).
 
-Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/pebmed-api/-/blob/develop/ERDiagram.jpg).
+Diagrama do banco de dados: [Diagrama ER](https://gitlab.com/hericke47/med-api/-/blob/develop/ERDiagram.jpg).
 
-Sendo também possivel instalar o [Insomnia](https://insomnia.rest/download),e importar o arquivo: [Insomnia.json](https://github.com/hericke47/pebmed-api/blob/develop/insomnia_pebmed_api.json).
+Sendo também possivel instalar o [Insomnia](https://insomnia.rest/download),e importar o arquivo: [Insomnia.json](https://github.com/hericke47/med-api/blob/develop/insomnia_med_api.json).
 
 ## Estrutura usando DDD (Domain Driven Design)
 

@@ -3,27 +3,27 @@ name: CI
 on:
   push:
     branches: [ main ]
-    
+
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Setup Nodejs
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-          
+
       - name: Install Dependencies
         run: npm install
-      
+
       - name: Build
         run: npm run build
-        
+
       - uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -31,8 +31,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: "., !node_modules"
-          target: "~/app/pebmed-api"
-          
+          target: "~/app/med-api"
+
       - name: Update Api
         uses: appleboy/ssh-action@master
         with:
@@ -41,8 +41,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/app/pebmed-api
+            cd ~/app/med-api
             npm install
             ./node_modules/.bin/typeorm migration:run
-            pm2 restart pebmed_api_pm2
-      
+            pm2 restart med_api_pm2
+

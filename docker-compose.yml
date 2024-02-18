@@ -1,9 +1,9 @@
 version: "3.3"
 
 services:
-  pebmed-postgres:
+  med-postgres:
     image: postgres
-    container_name: pebmed-postgres
+    container_name: med-postgres
     restart: always
     ports:
       - ${POSTGRES_PORT}:5432
@@ -14,11 +14,11 @@ services:
     volumes:
       - pgdata:/data/postgres
     networks:
-      - pebmed-network
+      - med-network
 
-  pebmed-postgres-test:
+  med-postgres-test:
     image: postgres
-    container_name: pebmed-postgres-test
+    container_name: med-postgres-test
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT_TEST}:5432
@@ -29,13 +29,13 @@ services:
     volumes:
       - pgdata:/data/postgres/test
     networks:
-      - pebmed-network
+      - med-network
 
-  pebmed-api:
+  med-api:
     build: .
-    container_name: pebmed-api
+    container_name: med-api
     environment:
-      - POSTGRES_HOST=pebmed-postgres
+      - POSTGRES_HOST=med-postgres
     restart: always
     ports:
       - 3003:3003
@@ -44,12 +44,12 @@ services:
       - .:/usr/app
       - /usr/app/node_modules
     networks:
-      - pebmed-network
+      - med-network
     depends_on:
-      - pebmed-postgres
+      - med-postgres
 
 networks:
-  pebmed-network:
+  med-network:
     driver: bridge
 
 volumes:

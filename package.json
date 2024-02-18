@@ -1,5 +1,5 @@
 {
-  "name": "pebmed-api",
+  "name": "med-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/hericke47/pebmed-api.git"
+    "url": "git+ssh://git@gitlab.com/hericke47/med-api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/hericke47/pebmed-api/issues"
+    "url": "https://gitlab.com/hericke47/med-api/issues"
   },
-  "homepage": "https://gitlab.com/hericke47/pebmed-api#readme",
+  "homepage": "https://gitlab.com/hericke47/med-api#readme",
   "devDependencies": {
     "@babel/cli": "7.13.14",
     "@babel/core": "7.13.15",
